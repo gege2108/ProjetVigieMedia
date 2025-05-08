@@ -324,5 +324,5 @@ public class Personnalite {
 
 
 
-    //TODO updatePossedeOrganisation(Organisation organisation, Float pourcentage) qui prendra un mdp administrateur
+
 }

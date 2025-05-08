@@ -16,7 +16,7 @@ public class AlerteModuleSuiviePersonne {
     @Override
     public String toString(){
         StringBuilder sb = new StringBuilder();
-        sb.append("Attention, ").append("la publication ").append(publicationAlerte.getTitre()).append(" est faite par le media ").append(mediaAlerte.getNomMedia()).append(" qui est detenu par ").append(personneSuivie.getNomPersonnalite());
+        sb.append("ALERTE VIGIE !!! ").append("La publication ").append(publicationAlerte.getTitre()).append(" est faite par le media ").append(mediaAlerte.getNomMedia()).append(" qui est detenu par ").append(personneSuivie.getNomPersonnalite());
         return sb.toString();
     }
 
