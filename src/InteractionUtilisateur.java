@@ -1,4 +1,5 @@
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 
@@ -18,6 +19,7 @@ public class InteractionUtilisateur {
         String infoInstances = "";
         MAJ MiseAJour = new MAJ(listMedia,listOrganisation,listPersonnalite);
         Personnalite initBolore = null;
+        Media initTMC = null;
 
         //initialisation du module de suivi de Vincent Bollore
         for (int i = 0; i < listPersonnalite.size(); i++) {
@@ -26,6 +28,15 @@ public class InteractionUtilisateur {
             }
         }
         ModuleSuiviePersonne moduleSuivieVincentBollore = new ModuleSuiviePersonne(initBolore,listMedia);
+
+
+        //initialisation du module de suivi de TMC
+        for (int i = 0; i < listMedia.size() ; i++) {
+            if (listMedia.get(i).getNomMedia().equals("TMC")){
+                initTMC = listMedia.get(i);
+            }
+        }
+        ModuleSuivieMedia moduleSuivieTMC = new ModuleSuivieMedia(initTMC);
 
 
         //pour la fin, il faudra le convertir en Float
@@ -509,6 +520,8 @@ public class InteractionUtilisateur {
                     System.out.println("Tapez Rachat pour mettre à jour les rachats, tapez Publier pour ajouter une publication à un media : ");
                     infoInstances = scanner.nextLine();
                     if (infoInstances.equals("Rachat")){
+                        LocalDateTime dateRachatTMC = null;
+                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
                         String acheteur,vendeur,vendu,pourcentage = "";
                         System.out.println("Tapez Personne si l'acheteur est une personne, tapez Organisation si l'acheteur est une organisation");
                         infoInstances = scanner.nextLine();
@@ -547,6 +560,10 @@ public class InteractionUtilisateur {
                                     float pourcentageFloat = Float.parseFloat(pourcentage);
 
                                     MiseAJour.rachatPersonnalitePersonnaliteMedia(acheteur,vendeur,vendu,pourcentageFloat);
+                                    if (vendu.equals("TMC")){
+                                        dateRachatTMC = LocalDateTime.now();
+                                        moduleSuivieTMC.setHistoriqueRachat("La personne " + acheteur + " rachete " + pourcentageFloat + " % de TMC à la personne " + vendeur + " à la date " + dateRachatTMC.format(formatter) );
+                                    }
                                 }
 
 
@@ -594,6 +611,10 @@ public class InteractionUtilisateur {
                                     float pourcentageFloat = Float.parseFloat(pourcentage);
 
                                     MiseAJour.rachatPersonnaliteOrganisationMedia(acheteur,vendeur,vendu,pourcentageFloat);
+                                    if (vendu.equals("TMC")){
+                                        dateRachatTMC = LocalDateTime.now();
+                                        moduleSuivieTMC.setHistoriqueRachat("La personne " + acheteur + " rachete " + pourcentageFloat + " % de TMC à l'organisation " + vendeur + " à la date " + dateRachatTMC.format(formatter));
+                                    }
 
                                 }
 
@@ -649,6 +670,10 @@ public class InteractionUtilisateur {
                                     float pourcentageFloat = Float.parseFloat(pourcentage);
 
                                     MiseAJour.rachatOrganisationPersonnaliteMedia(acheteur,vendeur,vendu,pourcentageFloat);
+                                    if (vendu.equals("TMC")){
+                                        dateRachatTMC = LocalDateTime.now();
+                                        moduleSuivieTMC.setHistoriqueRachat("L'organisation " + acheteur + " rachete " + pourcentageFloat + " % de TMC à la personne " + vendeur + " à la date " + dateRachatTMC.format(formatter));
+                                    }
                                 }
 
 
@@ -696,6 +721,10 @@ public class InteractionUtilisateur {
                                     float pourcentageFloat = Float.parseFloat(pourcentage);
 
                                     MiseAJour.rachatOrganisationOrganisationMedia(acheteur,vendeur,vendu,pourcentageFloat);
+                                    if (vendu.equals("TMC")){
+                                        dateRachatTMC = LocalDateTime.now();
+                                        moduleSuivieTMC.setHistoriqueRachat("L'organisation " + acheteur + " rachete " + pourcentageFloat + " % de TMC à l'organisation " + vendeur + " à la date " + dateRachatTMC.format(formatter));
+                                    }
 
                                 }
 
@@ -727,6 +756,7 @@ public class InteractionUtilisateur {
                         Organisation organisationMentionnee = null;
                         Media mediaMentione = null;
                         LocalDateTime datePublication = null;
+                        boolean isTMC = false;
                         boolean mentionVincentBollore = false;
                         System.out.println("Voici la liste des medias : ");
                         for (int i = 0; i < listMedia.size(); i++) {
@@ -748,6 +778,9 @@ public class InteractionUtilisateur {
                         }
 
                         else{
+                            if (mediaPublication.getNomMedia().equals("TMC")){
+                                isTMC = true;
+                            }
                             //Ecrire dans le rapport que j'ai considere que les sites ne pouvaient publier que des articles ou des interviews
                             if (mediaPublication.getType().equals("Télévision") || mediaPublication.getType().equals("Radio")){
                                 System.out.println("Tapez Reportage si la publication est un reportage, tapez Interview si la publication est une interview : ");
@@ -796,6 +829,7 @@ public class InteractionUtilisateur {
                                                 if (personneMentionnee!=null){
                                                     listMentionPersonne.add(personneMentionnee);
                                                     System.out.println(personneMentionnee.getNomPersonnalite() + " a ete ajoutee aux mentions");
+                                                    moduleSuivieTMC.setNbMentionPersonne(personneMentionnee);
                                                     personneMentionnee = null;
                                                 }
                                             }
@@ -836,6 +870,7 @@ public class InteractionUtilisateur {
                                                 if (organisationMentionnee!=null){
                                                     listMentionOrganisation.add(organisationMentionnee);
                                                     System.out.println(organisationMentionnee.getNomOrganisation() + " a ete ajoutee aux mentions");
+                                                    moduleSuivieTMC.setNbMentionOrganisation(organisationMentionnee);
                                                     organisationMentionnee = null;
                                                 }
                                             }
@@ -844,7 +879,7 @@ public class InteractionUtilisateur {
                                         }
                                     }
 
-                                    System.out.println("Tapez Media s'il y a des medias mentionnees dans le reportage, sinon vous pouvez taper ce que vous voulez");
+                                    System.out.println("Tapez Media s'il y a des medias mentionnes dans le reportage, sinon vous pouvez taper ce que vous voulez");
                                     infoInstances = scanner.nextLine();
                                     if (infoInstances.equals("Media")){
 
@@ -878,6 +913,7 @@ public class InteractionUtilisateur {
                                                 if (mediaMentione!=null){
                                                     listMentionMedia.add(mediaMentione);
                                                     System.out.println(mediaMentione.getNomMedia() + " a ete ajoutee aux mentions");
+                                                    moduleSuivieTMC.setNbMentionMedia(mediaMentione);
                                                     mediaMentione = null;
                                                 }
                                             }
@@ -996,6 +1032,7 @@ public class InteractionUtilisateur {
                                                 if (personneMentionnee!=null){
                                                     listMentionPersonne.add(personneMentionnee);
                                                     System.out.println(personneMentionnee.getNomPersonnalite() + " a ete ajoutee aux mentions");
+                                                    moduleSuivieTMC.setNbMentionPersonne(personneMentionnee);
                                                     personneMentionnee = null;
                                                 }
                                             }
@@ -1036,6 +1073,7 @@ public class InteractionUtilisateur {
                                                 if (organisationMentionnee!=null){
                                                     listMentionOrganisation.add(organisationMentionnee);
                                                     System.out.println(organisationMentionnee.getNomOrganisation() + " a ete ajoutee aux mentions");
+                                                    moduleSuivieTMC.setNbMentionOrganisation(organisationMentionnee);
                                                     organisationMentionnee = null;
                                                 }
                                             }
@@ -1078,6 +1116,7 @@ public class InteractionUtilisateur {
                                                 if (mediaMentione!=null){
                                                     listMentionMedia.add(mediaMentione);
                                                     System.out.println(mediaMentione.getNomMedia() + " a ete ajoutee aux mentions");
+                                                    moduleSuivieTMC.setNbMentionMedia(mediaMentione);
                                                     mediaMentione = null;
                                                 }
                                             }
@@ -1203,6 +1242,7 @@ public class InteractionUtilisateur {
                                                     if (personneMentionnee!=null){
                                                         listMentionPersonne.add(personneMentionnee);
                                                         System.out.println(personneMentionnee.getNomPersonnalite() + " a ete ajoutee aux mentions");
+                                                        moduleSuivieTMC.setNbMentionPersonne(personneMentionnee);
                                                         personneMentionnee = null;
                                                     }
                                                 }
@@ -1243,6 +1283,7 @@ public class InteractionUtilisateur {
                                                     if (organisationMentionnee!=null){
                                                         listMentionOrganisation.add(organisationMentionnee);
                                                         System.out.println(organisationMentionnee.getNomOrganisation() + " a ete ajoutee aux mentions");
+                                                        moduleSuivieTMC.setNbMentionOrganisation(organisationMentionnee);
                                                         organisationMentionnee = null;
                                                     }
                                                 }
@@ -1285,6 +1326,7 @@ public class InteractionUtilisateur {
                                                     if (mediaMentione!=null){
                                                         listMentionMedia.add(mediaMentione);
                                                         System.out.println(mediaMentione.getNomMedia() + " a ete ajoutee aux mentions");
+                                                        moduleSuivieTMC.setNbMentionMedia(mediaMentione);
                                                         mediaMentione = null;
                                                     }
                                                 }
@@ -1402,6 +1444,7 @@ public class InteractionUtilisateur {
                                                     if (personneMentionnee!=null){
                                                         listMentionPersonne.add(personneMentionnee);
                                                         System.out.println(personneMentionnee.getNomPersonnalite() + " a ete ajoutee aux mentions");
+                                                        moduleSuivieTMC.setNbMentionPersonne(personneMentionnee);
                                                         personneMentionnee = null;
                                                     }
                                                 }
@@ -1442,6 +1485,7 @@ public class InteractionUtilisateur {
                                                     if (organisationMentionnee!=null){
                                                         listMentionOrganisation.add(organisationMentionnee);
                                                         System.out.println(organisationMentionnee.getNomOrganisation() + " a ete ajoutee aux mentions");
+                                                        moduleSuivieTMC.setNbMentionOrganisation(organisationMentionnee);
                                                         organisationMentionnee = null;
                                                     }
                                                 }
@@ -1483,7 +1527,8 @@ public class InteractionUtilisateur {
 
                                                     if (mediaMentione!=null){
                                                         listMentionMedia.add(mediaMentione);
-                                                        System.out.println(mediaMentione.getNomMedia() + " a ete ajoutee aux mentions");
+                                                        System.out.println(mediaMentione.getNomMedia() + " a ete ajoute aux mentions");
+                                                        moduleSuivieTMC.setNbMentionMedia(mediaMentione);
                                                         mediaMentione = null;
                                                     }
                                                 }
@@ -1593,6 +1638,16 @@ public class InteractionUtilisateur {
                             moduleSuivieVincentBollore.setPourcentageMentionMedia(mediaPourcentage);
                             System.out.println(moduleSuivieVincentBollore.affichePourcentageMentionMedia(mediaPourcentage));
                         }
+                    }
+                }
+                else if (infoInstances.equals("SuiviMedia")) {
+                    System.out.println("Tapez Mention si vous voulez consulter la liste du nombre de mentions de TMC, tapez Historique si vous voulez consulter un historique de l'évolution des rachats de parts de TMC");
+                    infoInstances = scanner.nextLine();
+                    if (infoInstances.equals("Mention")){
+                        System.out.println(moduleSuivieTMC.afficheMention());
+                    }
+                    else if(infoInstances.equals("Historique")){
+                        System.out.println(moduleSuivieTMC.getHistoriqueRachat());
                     }
                 }
             }

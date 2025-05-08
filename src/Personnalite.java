@@ -3,7 +3,7 @@ import java.util.TreeMap;
 
 // Utiliser un Comparator avec les TreeMap pour afficher les personnes par ordre alphabetique
 
-public class Personnalite {
+public class Personnalite implements Comparable<Personnalite>{
     private String nomPersonnalite;
     private String qualificatifOrganisation;
     private String qualificatifMedia;
@@ -319,6 +319,11 @@ public class Personnalite {
 
 
         return sb.toString();
+    }
+
+    @Override
+    public int compareTo(Personnalite other) {
+        return this.nomPersonnalite.compareTo(other.nomPersonnalite);
     }
 
 

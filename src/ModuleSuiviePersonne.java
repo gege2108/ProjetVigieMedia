@@ -3,7 +3,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-// Modules : observers, Vigie : observable ou l'inverse jsp
 
 public class ModuleSuiviePersonne {
     private final Personnalite personneSuivie;
@@ -61,7 +60,6 @@ public class ModuleSuiviePersonne {
         }
 
         if (trouve) {
-            //TODO fixer cette alerte car elle ne fonctionne pas
             //envoie une alerte à la vigie si la personne suivie possede le media qui detient la publication
             if (!personneSuivie.afficheMediaPossede(mediaPossedantPublication).equals(personneSuivie.getNomPersonnalite() + " ne possede pas ce media.")) {
                 AlerteModuleSuiviePersonne alerteModuleSuiviePersonne = new AlerteModuleSuiviePersonne(personneSuivie, publication, mediaPossedantPublication);
