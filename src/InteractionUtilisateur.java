@@ -17,13 +17,24 @@ public class InteractionUtilisateur {
         Scanner scanner = new Scanner(System.in);
         String infoInstances = "";
         MAJ MiseAJour = new MAJ(listMedia,listOrganisation,listPersonnalite);
+        Personnalite initBolore = null;
+
+        //initialisation du module de suivi de Vincent Bollore
+        for (int i = 0; i < listPersonnalite.size(); i++) {
+            if (listPersonnalite.get(i).getNomPersonnalite().equals("Vincent Bolloré")){
+                initBolore = listPersonnalite.get(i);
+            }
+        }
+        ModuleSuiviePersonne moduleSuivieVincentBollore = new ModuleSuiviePersonne(initBolore,listMedia);
+
+
         //pour la fin, il faudra le convertir en Float
         float newPourcentage;
         while (!infoInstances.equals("quitter")) {
             Collections.sort(listMedia);
             Collections.sort(listOrganisation);
 
-            System.out.println("Tapez Info pour obtenir des informations au sein de la base de donnee, tapez Modification pour la modifier \t");
+            System.out.println("Tapez Info pour obtenir des informations au sein de la base de donnee, tapez Modification pour la modifier, tapez Suivi pour consulter les modules de suivie specialises \t");
             infoInstances = scanner.nextLine();
             //Cas où l'utilisateur veut des informations
             if (infoInstances.equals("Info")) {
@@ -716,6 +727,7 @@ public class InteractionUtilisateur {
                         Organisation organisationMentionnee = null;
                         Media mediaMentione = null;
                         LocalDateTime datePublication = null;
+                        boolean mentionVincentBollore = false;
                         System.out.println("Voici la liste des medias : ");
                         for (int i = 0; i < listMedia.size(); i++) {
                             System.out.println(listMedia.get(i).getNomMedia());
@@ -762,6 +774,9 @@ public class InteractionUtilisateur {
                                             for (int i = 0; i < listPersonnalite.size(); i++) {
                                                 if (infoInstances.equals(listPersonnalite.get(i).getNomPersonnalite())){
                                                     personneMentionnee = listPersonnalite.get(i);
+                                                    if (personneMentionnee.getNomPersonnalite().equals("Vincent Bolloré")){
+                                                        mentionVincentBollore = true;
+                                                    }
                                                 }
                                             }
 
@@ -881,7 +896,7 @@ public class InteractionUtilisateur {
                                             if (listMentionMedia.isEmpty()){
                                                 nouveauReportage = new Reportage(titre,datePublication);
                                             }
-                                            //Cas où seuls media mentione
+                                            //Cas où seuls sont media mentiones
                                             else{
                                                 nouveauReportage = new Reportage(listMentionMedia,titre,"reportage",datePublication);
                                             }
@@ -922,6 +937,12 @@ public class InteractionUtilisateur {
                                             }
 
                                         }
+
+                                        if (mentionVincentBollore){
+                                            moduleSuivieVincentBollore.setListPublicationConcerne(mediaPublication,nouveauReportage);
+                                        }
+                                        mentionVincentBollore = false;
+
                                     }
 
                                     mediaPublication.setListPublication(nouveauReportage);
@@ -952,7 +973,11 @@ public class InteractionUtilisateur {
                                             for (int i = 0; i < listPersonnalite.size(); i++) {
                                                 if (infoInstances.equals(listPersonnalite.get(i).getNomPersonnalite())){
                                                     personneMentionnee = listPersonnalite.get(i);
+                                                    if (personneMentionnee.getNomPersonnalite().equals("Vincent Bolloré")){
+                                                        mentionVincentBollore = true;
+                                                    }
                                                 }
+
                                             }
 
                                             if (personneMentionnee == null && !infoInstances.equals("Fin")){
@@ -1112,6 +1137,12 @@ public class InteractionUtilisateur {
                                             }
 
                                         }
+
+                                        if (mentionVincentBollore){
+                                            moduleSuivieVincentBollore.setListPublicationConcerne(mediaPublication,nouvelleInterview);
+                                        }
+                                        mentionVincentBollore = false;
+
                                     }
 
                                     mediaPublication.setListPublication(nouvelleInterview);
@@ -1149,7 +1180,11 @@ public class InteractionUtilisateur {
                                                 for (int i = 0; i < listPersonnalite.size(); i++) {
                                                     if (infoInstances.equals(listPersonnalite.get(i).getNomPersonnalite())){
                                                         personneMentionnee = listPersonnalite.get(i);
+                                                        if (personneMentionnee.getNomPersonnalite().equals("Vincent Bolloré")){
+                                                            mentionVincentBollore = true;
+                                                        }
                                                     }
+
                                                 }
 
                                                 if (personneMentionnee == null && !infoInstances.equals("Fin")){
@@ -1260,7 +1295,7 @@ public class InteractionUtilisateur {
 
                                         datePublication = LocalDateTime.now();
 
-                                        //Verification que des personnes ont bien ete ajoutee
+                                        //Cas où aucune personne n'a ete ajoutee
                                         if(listMentionPersonne.isEmpty()){
 
                                             if (listMentionOrganisation.isEmpty()){
@@ -1307,8 +1342,13 @@ public class InteractionUtilisateur {
                                                     //Cas où les 3 sont mentionnes
                                                     nouvelArticle = new Article(listMentionMedia,titre,listMentionPersonne,listMentionOrganisation,datePublication);
                                                 }
-
                                             }
+
+                                            if (mentionVincentBollore){
+                                                moduleSuivieVincentBollore.setListPublicationConcerne(mediaPublication,nouvelArticle);
+                                            }
+                                            mentionVincentBollore = false;
+
                                         }
 
                                         mediaPublication.setListPublication(nouvelArticle);
@@ -1339,6 +1379,9 @@ public class InteractionUtilisateur {
                                                 for (int i = 0; i < listPersonnalite.size(); i++) {
                                                     if (infoInstances.equals(listPersonnalite.get(i).getNomPersonnalite())){
                                                         personneMentionnee = listPersonnalite.get(i);
+                                                        if (personneMentionnee.getNomPersonnalite().equals("Vincent Bolloré")){
+                                                            mentionVincentBollore = true;
+                                                        }
                                                     }
                                                 }
 
@@ -1497,8 +1540,13 @@ public class InteractionUtilisateur {
                                                     //Cas où les 3 sont mentionnes
                                                     nouvelleInterview = new Interview(listMentionMedia,titre,listMentionPersonne,listMentionOrganisation,datePublication);
                                                 }
-
                                             }
+
+                                            if (mentionVincentBollore){
+                                                moduleSuivieVincentBollore.setListPublicationConcerne(mediaPublication,nouvelleInterview);
+                                            }
+                                            mentionVincentBollore = false;
+
                                         }
 
                                         mediaPublication.setListPublication(nouvelleInterview);
@@ -1514,6 +1562,17 @@ public class InteractionUtilisateur {
                     }
                 }
 
+            } else if (infoInstances.equals("Suivi")) {
+                System.out.println("Tapez SuiviPersonne si vous voulez consulter le module de suivi de Vincent Bolloré, tapez SuiviMedia si vous voulez consulter le module de suivi du media (mettre le nom du media), tapez Vigie si vous voulez consulter la vigie : ");
+                infoInstances = scanner.nextLine();
+                if (infoInstances.equals("SuiviPersonne")){
+                    System.out.println("Tapez Historique si vous voulez consulter l'historique des publications qui la concernent, tapez Pourcentage si vous vouler afficher le pourcentage de mentions par un certain média");
+                    infoInstances = scanner.nextLine();
+
+                    if (infoInstances.equals("Historique")){
+                        System.out.println(moduleSuivieVincentBollore.afficheHistoriquePublication());
+                    }
+                }
             }
         }
         return 0;

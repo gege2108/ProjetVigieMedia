@@ -7,7 +7,7 @@ import java.time.format.DateTimeFormatter;
 
 //TODO rajouter la date
 
-abstract class Publication {
+public abstract class Publication {
     private List<Personnalite> listMentionPersonne;
     private List<Organisation> listMentionOrganisation;
     private List<Media> listMentionMedia;

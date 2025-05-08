@@ -9,21 +9,24 @@ public class ModuleSuiviePersonne {
     private final Personnalite personneSuivie;
     private List<Media> listMedia;
     private Map<Media,Float> pourcentageMentionMedia;
-    private List<Publication> listPublicationConcerne;
+    private List<Publication> listPublicationConcernee;
+    private Vigie vigie;
+
 
     public ModuleSuiviePersonne(Personnalite personneSuivie, List<Media> listMedia){
         this.personneSuivie = personneSuivie;
         this.listMedia = listMedia;
         pourcentageMentionMedia = new TreeMap<>();
-        listPublicationConcerne = new ArrayList<>();
+        listPublicationConcernee = new ArrayList<>();
+        vigie = Vigie.getInstance();
     }
 
     public Map<Media, Float> getPourcentageMentionMedia() {
         return pourcentageMentionMedia;
     }
 
-    public List<Publication> getListPublicationConcerne() {
-        return listPublicationConcerne;
+    public List<Publication> getListPublicationConcernee() {
+        return listPublicationConcernee;
     }
 
 
@@ -46,12 +49,62 @@ public class ModuleSuiviePersonne {
         }
     }
 
-    public void setListPublicationConcerne(Publication publication){
-        listPublicationConcerne.add(publication);
+
+    public void setListPublicationConcerne(Media mediaPossedantPublication,Publication publication){
+
+        //Verifie que la publication mentionne bien la personne suivie
+        boolean trouve = false;
+        for (int i = 0; i < publication.getMentionPersonne().size(); i++) {
+            if (publication.getMentionPersonne().get(i).equals(personneSuivie)){
+                trouve = true;
+            }
+        }
+
+        if (trouve){
+            //TODO fixer cette alerte car elle ne fonctionne pas
+            for (int i = 0; i < personneSuivie.getPossedeMedia().size(); i++) {
+                //envoie une alerte à la vigie si la personne suivie possede le media qui detient la publication
+                if (personneSuivie.getPossedeMedia().get(i).equals(mediaPossedantPublication)){
+                    AlerteModuleSuiviePersonne alerteModuleSuiviePersonne = new AlerteModuleSuiviePersonne(personneSuivie,publication,mediaPossedantPublication);
+                    notificationVigie(alerteModuleSuiviePersonne);
+                }
+            }
+            listPublicationConcernee.add(publication);
+        }
+
+    }
+
+    public void notificationVigie(AlerteModuleSuiviePersonne alerteModuleSuiviePersonne){
+        System.out.println(alerteModuleSuiviePersonne);
+        vigie.setListAlerteModuleSuiviePersonne(alerteModuleSuiviePersonne);
     }
 
 
 
+    public String afficheHistoriquePublication(){
+        StringBuilder sb = new StringBuilder();
+        sb.append("Les publications : \n");
+        for (int i = 0; i < listPublicationConcernee.size(); i++) {
+            sb.append(listPublicationConcernee.get(i).getTitre()).append("\n");
+        }
+        sb.append("mentionnent " + personneSuivie.getNomPersonnalite());
 
-    //TODO envoyer des alertes à la vigie
+        return sb.toString();
+    }
+
+
+    public String affichePourcentageMentionMedia(Media media){
+        StringBuilder sb = new StringBuilder();
+        if (pourcentageMentionMedia.get(media)!= null){
+            sb.append("Le pourcentage de mention de " + personneSuivie.getNomPersonnalite()  + " dans le media " + media.getNomMedia() + " est de " + pourcentageMentionMedia.get(media) + "%");
+        }
+        else{
+            sb.append("Le media " + media.getNomMedia() + " ne mentionne " + personneSuivie.getNomPersonnalite() + " dans aucune de ses publications.");
+        }
+
+        return sb.toString();
+    }
+
+
+
 }
