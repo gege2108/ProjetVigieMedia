@@ -18,6 +18,10 @@ public class ModuleSuivieMedia {
         vigie = Vigie.getInstance();
     }
 
+    public Vigie getVigie(){
+        return vigie;
+    }
+
     public void setNbMentionMedia(Media mediaMentionnant){
         if(nbMentionMedia.get(mediaMentionnant)!=null){
             int r = nbMentionMedia.get(mediaMentionnant) + 1;

@@ -1,3 +1,4 @@
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -62,13 +63,13 @@ public class ModuleSuiviePersonne {
         if (trouve) {
             //envoie une alerte à la vigie si la personne suivie possede le media qui detient la publication
             if (!personneSuivie.afficheMediaPossede(mediaPossedantPublication).equals(personneSuivie.getNomPersonnalite() + " ne possede pas ce media.")) {
-                AlerteModuleSuiviePersonne alerteModuleSuiviePersonne = new AlerteModuleSuiviePersonne(personneSuivie, publication, mediaPossedantPublication);
+                AlerteModuleSuiviePersonne alerteModuleSuiviePersonne = new AlerteModuleSuiviePersonne(personneSuivie, publication, mediaPossedantPublication, LocalDateTime.now());
                 notificationVigie(alerteModuleSuiviePersonne);
             } else {
                 //Verifie si la personne possede des organisation possedant le media
                 for (Map.Entry<Organisation, Float> entry : personneSuivie.getPossedeOrganisation().entrySet()) {
                     if (entry.getKey().getPossedeMedia().containsKey(mediaPossedantPublication)) {
-                        AlerteModuleSuiviePersonne alerteModuleSuiviePersonne = new AlerteModuleSuiviePersonne(personneSuivie, publication, mediaPossedantPublication);
+                        AlerteModuleSuiviePersonne alerteModuleSuiviePersonne = new AlerteModuleSuiviePersonne(personneSuivie, publication, mediaPossedantPublication,LocalDateTime.now());
                         notificationVigie(alerteModuleSuiviePersonne);
                     }
                 }

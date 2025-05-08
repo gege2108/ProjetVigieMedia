@@ -1650,6 +1650,10 @@ public class InteractionUtilisateur {
                         System.out.println(moduleSuivieTMC.getHistoriqueRachat());
                     }
                 }
+
+                else if(infoInstances.equals("Vigie")){
+                    System.out.println(moduleSuivieTMC.getVigie().toString());
+                }
             }
         }
         return 0;

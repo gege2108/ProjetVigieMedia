@@ -4,10 +4,10 @@ import java.util.List;
 public class Vigie {
 
     //TODO rajouter la date et l'heure
-    private final List<AlerteModuleSuiviePersonne> listAlerteModuleSuiviePersonne;
+    private final List<Alerte> listAlerte;
 
     private Vigie(){
-        listAlerteModuleSuiviePersonne = new ArrayList<>();
+        listAlerte = new ArrayList<>();
     }
 
     // Classe interne qui contient l’unique instance
@@ -20,12 +20,20 @@ public class Vigie {
         return Holder.INSTANCE;
     }
 
-    public void setListAlerteModuleSuiviePersonne(AlerteModuleSuiviePersonne alerteModuleSuiviePersonne){
-        listAlerteModuleSuiviePersonne.add(alerteModuleSuiviePersonne);
+    public void setListAlerteModuleSuiviePersonne(Alerte alerte){
+        listAlerte.add(alerte);
     }
 
 
 
     //TODO fonction toString
+    @Override
+    public String toString(){
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < listAlerte.size(); i++) {
+            sb.append(listAlerte.get(i).toString()).append("\n");
+        }
+        return  sb.toString();
+    }
 
 }
