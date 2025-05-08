@@ -940,9 +940,9 @@ public class InteractionUtilisateur {
 
                                         if (mentionVincentBollore){
                                             moduleSuivieVincentBollore.setListPublicationConcerne(mediaPublication,nouveauReportage);
+                                            mentionVincentBollore = false;
                                         }
-                                        mentionVincentBollore = false;
-
+                                        
                                     }
 
                                     mediaPublication.setListPublication(nouveauReportage);
@@ -1140,8 +1140,8 @@ public class InteractionUtilisateur {
 
                                         if (mentionVincentBollore){
                                             moduleSuivieVincentBollore.setListPublicationConcerne(mediaPublication,nouvelleInterview);
+                                            mentionVincentBollore = false;
                                         }
-                                        mentionVincentBollore = false;
 
                                     }
 
@@ -1295,7 +1295,7 @@ public class InteractionUtilisateur {
 
                                         datePublication = LocalDateTime.now();
 
-                                        //Cas où aucune personne n'a ete ajoutee
+                                        //Verification que des personnes ont bien ete ajoutee
                                         if(listMentionPersonne.isEmpty()){
 
                                             if (listMentionOrganisation.isEmpty()){
@@ -1342,12 +1342,13 @@ public class InteractionUtilisateur {
                                                     //Cas où les 3 sont mentionnes
                                                     nouvelArticle = new Article(listMentionMedia,titre,listMentionPersonne,listMentionOrganisation,datePublication);
                                                 }
+
                                             }
 
                                             if (mentionVincentBollore){
                                                 moduleSuivieVincentBollore.setListPublicationConcerne(mediaPublication,nouvelArticle);
+                                                mentionVincentBollore = false;
                                             }
-                                            mentionVincentBollore = false;
 
                                         }
 
@@ -1541,12 +1542,10 @@ public class InteractionUtilisateur {
                                                     nouvelleInterview = new Interview(listMentionMedia,titre,listMentionPersonne,listMentionOrganisation,datePublication);
                                                 }
                                             }
-
                                             if (mentionVincentBollore){
                                                 moduleSuivieVincentBollore.setListPublicationConcerne(mediaPublication,nouvelleInterview);
+                                                mentionVincentBollore = false;
                                             }
-                                            mentionVincentBollore = false;
-
                                         }
 
                                         mediaPublication.setListPublication(nouvelleInterview);
@@ -1571,6 +1570,29 @@ public class InteractionUtilisateur {
 
                     if (infoInstances.equals("Historique")){
                         System.out.println(moduleSuivieVincentBollore.afficheHistoriquePublication());
+                    }
+                    else if (infoInstances.equals("Pourcentage")){
+                        System.out.println("Voici la liste des medias : ");
+                        for (int i = 0; i < listMedia.size(); i++) {
+                            System.out.println(listMedia.get(i).getNomMedia());
+                        }
+                        System.out.println("Pour quel media voulez-vous afficher le pourcentage de mentions de Vincent Bolloré ?");
+                        infoInstances = scanner.nextLine();
+                        Media mediaPourcentage = null;
+                        for (int i = 0; i < listMedia.size(); i++) {
+                            if (listMedia.get(i).getNomMedia().equals(infoInstances)){
+                                mediaPourcentage = listMedia.get(i);
+                            }
+                        }
+
+                        if (mediaPourcentage == null){
+                            System.out.println("Ce media n'est pas dans la base de donnee");
+                        }
+
+                        else{
+                            moduleSuivieVincentBollore.setPourcentageMentionMedia(mediaPourcentage);
+                            System.out.println(moduleSuivieVincentBollore.affichePourcentageMentionMedia(mediaPourcentage));
+                        }
                     }
                 }
             }

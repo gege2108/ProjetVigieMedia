@@ -41,7 +41,7 @@ public class ModuleSuiviePersonne {
             }
         }
         if (nbMention!=0){
-            float r = listPublication.size()/ (float) nbMention;
+            float r = ((float)nbMention/listPublication.size()) * 100;
             pourcentageMentionMedia.put(media,r);
         }
         else{
