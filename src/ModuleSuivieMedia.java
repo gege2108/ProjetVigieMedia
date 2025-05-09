@@ -24,9 +24,9 @@ public class ModuleSuivieMedia {
         return vigie;
     }
 
-    public void notificationVigie(AlerteModuleSuivieMediaSeuil alerteModuleSuivieMediaSeuil){
-        System.out.println(alerteModuleSuivieMediaSeuil);
-        vigie.setListAlerte(alerteModuleSuivieMediaSeuil);
+    public void notificationVigie(AlerteModuleSuivieMedia alerteModuleSuivieMedia){
+        System.out.println(alerteModuleSuivieMedia);
+        vigie.setListAlerte(alerteModuleSuivieMedia);
     }
 
     public void setNbMentionMedia(Media mediaMentionne){
@@ -83,8 +83,19 @@ public class ModuleSuivieMedia {
         }
     }
 
-    public void setHistoriqueRachat(String rachat){
+    public void setHistoriqueRachat(String rachat,boolean nouveauProprietaire,Personnalite personneAlerte,Organisation organisationAlerte){
         historiqueRachat.append(rachat).append("\n");
+        if (nouveauProprietaire){
+            LocalDateTime date = LocalDateTime.now();
+            if (personneAlerte!=null){
+                AlerteModuleSuivieMediaNouveauProprietaire alerteModuleSuivieMediaNouveauProprietaire = new AlerteModuleSuivieMediaNouveauProprietaire(mediaSuivi,personneAlerte,date);
+                notificationVigie(alerteModuleSuivieMediaNouveauProprietaire);
+            }
+            else if(organisationAlerte!=null){
+                AlerteModuleSuivieMediaNouveauProprietaire alerteModuleSuivieMediaNouveauProprietaire = new AlerteModuleSuivieMediaNouveauProprietaire(mediaSuivi,organisationAlerte,date);
+                notificationVigie(alerteModuleSuivieMediaNouveauProprietaire);
+            }
+        }
     }
 
     //TODO fonction qui envoie une alerte si une nouvelle personne/organisation rachete un nouveau media + creer l'alerte

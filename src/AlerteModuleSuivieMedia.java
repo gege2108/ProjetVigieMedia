@@ -1,5 +1,5 @@
 import java.time.LocalDateTime;
-
+//J'aurais mieux fait de mettre l'attribut mediaAlerte dans la sous classe AlerteModuleSuivieMediaSeuil...
 public abstract class AlerteModuleSuivieMedia extends  Alerte{
     protected final Media mediaSuivi;
     protected Personnalite personneAlerte;

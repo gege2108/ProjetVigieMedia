@@ -516,9 +516,19 @@ public class InteractionUtilisateur {
             else if(infoInstances.equals("Modification")){
                 System.out.println("Entrez le mot de passe administrateur : ");
                 infoInstances = scanner.nextLine();
+                Personnalite personneAlerteTMC = null;
+                Organisation organisationAlerteTMC = null;
+                boolean nouveauProprietaire = true;
                 if(infoInstances.equals("polytechlover")){
                     System.out.println("Tapez Rachat pour mettre à jour les rachats, tapez Publier pour ajouter une publication à un media : ");
                     infoInstances = scanner.nextLine();
+                    //Initialisation de variable temporaire referençant TMC
+                    Media instanceTMC = null;
+                    for (int i = 0; i < listMedia.size(); i++) {
+                        if (listMedia.get(i).getNomMedia().equals("TMC")){
+                            instanceTMC = listMedia.get(i);
+                        }
+                    }
                     if (infoInstances.equals("Rachat")){
                         LocalDateTime dateRachatTMC = null;
                         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
@@ -559,10 +569,24 @@ public class InteractionUtilisateur {
                                     pourcentage = scanner.nextLine();
                                     float pourcentageFloat = Float.parseFloat(pourcentage);
 
+
+
+                                    for (int i = 0; i < listPersonnalite.size(); i++) {
+                                        if (listPersonnalite.get(i).getNomPersonnalite().equals(acheteur)){
+                                            personneAlerteTMC = listPersonnalite.get(i);
+                                            if (listPersonnalite.get(i).getPossedeMedia().containsKey(instanceTMC)){
+                                                nouveauProprietaire = false;
+                                            }
+                                        }
+                                    }
+
+
+
                                     MiseAJour.rachatPersonnalitePersonnaliteMedia(acheteur,vendeur,vendu,pourcentageFloat);
                                     if (vendu.equals("TMC")){
                                         dateRachatTMC = LocalDateTime.now();
-                                        moduleSuivieTMC.setHistoriqueRachat("La personne " + acheteur + " rachete " + pourcentageFloat + " % de TMC à la personne " + vendeur + " à la date " + dateRachatTMC.format(formatter) );
+                                        moduleSuivieTMC.setHistoriqueRachat("La personne " + acheteur + " rachete " + pourcentageFloat + " % de TMC à la personne " + vendeur + " à la date " + dateRachatTMC.format(formatter),nouveauProprietaire,personneAlerteTMC,organisationAlerteTMC);
+                                        personneAlerteTMC = null;
                                     }
                                 }
 
@@ -610,10 +634,33 @@ public class InteractionUtilisateur {
                                     pourcentage = scanner.nextLine();
                                     float pourcentageFloat = Float.parseFloat(pourcentage);
 
+
+
+                                    for (int i = 0; i < listPersonnalite.size(); i++) {
+                                        if (listPersonnalite.get(i).getNomPersonnalite().equals(acheteur)){
+                                            personneAlerteTMC = listPersonnalite.get(i);
+                                            if (listPersonnalite.get(i).getPossedeMedia().containsKey(instanceTMC)){
+                                                System.out.println("Deuxième boucle verifiee");
+                                                nouveauProprietaire = false;
+
+                                            }
+                                        }
+                                    }
+
+
+
+
+
+
                                     MiseAJour.rachatPersonnaliteOrganisationMedia(acheteur,vendeur,vendu,pourcentageFloat);
                                     if (vendu.equals("TMC")){
                                         dateRachatTMC = LocalDateTime.now();
-                                        moduleSuivieTMC.setHistoriqueRachat("La personne " + acheteur + " rachete " + pourcentageFloat + " % de TMC à l'organisation " + vendeur + " à la date " + dateRachatTMC.format(formatter));
+                                        moduleSuivieTMC.setHistoriqueRachat("La personne " + acheteur + " rachete " + pourcentageFloat + " % de TMC à l'organisation " + vendeur + " à la date " + dateRachatTMC.format(formatter),nouveauProprietaire,personneAlerteTMC,organisationAlerteTMC);
+                                        if (personneAlerteTMC==null){
+                                            System.out.println("personne deja null");
+                                            personneAlerteTMC = null;
+                                        }
+
                                     }
 
                                 }
@@ -669,10 +716,21 @@ public class InteractionUtilisateur {
                                     pourcentage = scanner.nextLine();
                                     float pourcentageFloat = Float.parseFloat(pourcentage);
 
+
+                                    for (int i = 0; i < listOrganisation.size(); i++) {
+                                        if (listOrganisation.get(i).getNomOrganisation().equals(acheteur)){
+                                            organisationAlerteTMC = listOrganisation.get(i);
+                                            if (listOrganisation.get(i).getPossedeMedia().containsKey(instanceTMC)){
+                                                nouveauProprietaire = false;
+                                            }
+                                        }
+                                    }
+
                                     MiseAJour.rachatOrganisationPersonnaliteMedia(acheteur,vendeur,vendu,pourcentageFloat);
                                     if (vendu.equals("TMC")){
                                         dateRachatTMC = LocalDateTime.now();
-                                        moduleSuivieTMC.setHistoriqueRachat("L'organisation " + acheteur + " rachete " + pourcentageFloat + " % de TMC à la personne " + vendeur + " à la date " + dateRachatTMC.format(formatter));
+                                        moduleSuivieTMC.setHistoriqueRachat("L'organisation " + acheteur + " rachete " + pourcentageFloat + " % de TMC à la personne " + vendeur + " à la date " + dateRachatTMC.format(formatter),nouveauProprietaire,personneAlerteTMC,organisationAlerteTMC);
+                                        organisationAlerteTMC = null;
                                     }
                                 }
 
@@ -720,10 +778,21 @@ public class InteractionUtilisateur {
                                     pourcentage = scanner.nextLine();
                                     float pourcentageFloat = Float.parseFloat(pourcentage);
 
+
+                                    for (int i = 0; i < listOrganisation.size(); i++) {
+                                        if (listOrganisation.get(i).getNomOrganisation().equals(acheteur)){
+                                            organisationAlerteTMC = listOrganisation.get(i);
+                                            if (listOrganisation.get(i).getPossedeMedia().containsKey(instanceTMC)){
+                                                nouveauProprietaire = false;
+                                            }
+                                        }
+                                    }
+
                                     MiseAJour.rachatOrganisationOrganisationMedia(acheteur,vendeur,vendu,pourcentageFloat);
                                     if (vendu.equals("TMC")){
                                         dateRachatTMC = LocalDateTime.now();
-                                        moduleSuivieTMC.setHistoriqueRachat("L'organisation " + acheteur + " rachete " + pourcentageFloat + " % de TMC à l'organisation " + vendeur + " à la date " + dateRachatTMC.format(formatter));
+                                        moduleSuivieTMC.setHistoriqueRachat("L'organisation " + acheteur + " rachete " + pourcentageFloat + " % de TMC à l'organisation " + vendeur + " à la date " + dateRachatTMC.format(formatter),nouveauProprietaire,personneAlerteTMC,organisationAlerteTMC);
+                                        organisationAlerteTMC = null;
                                     }
 
                                 }
