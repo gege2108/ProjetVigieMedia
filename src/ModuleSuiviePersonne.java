@@ -81,7 +81,7 @@ public class ModuleSuiviePersonne {
 
             public void notificationVigie(AlerteModuleSuiviePersonne alerteModuleSuiviePersonne){
                 System.out.println(alerteModuleSuiviePersonne);
-                vigie.setListAlerteModuleSuiviePersonne(alerteModuleSuiviePersonne);
+                vigie.setListAlerte(alerteModuleSuiviePersonne);
             }
 
 

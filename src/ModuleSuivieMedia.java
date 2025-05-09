@@ -1,3 +1,5 @@
+import java.time.LocalDateTime;
+import java.util.Locale;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -22,33 +24,62 @@ public class ModuleSuivieMedia {
         return vigie;
     }
 
-    public void setNbMentionMedia(Media mediaMentionnant){
-        if(nbMentionMedia.get(mediaMentionnant)!=null){
-            int r = nbMentionMedia.get(mediaMentionnant) + 1;
-            nbMentionMedia.put(mediaMentionnant,r);
+    public void notificationVigie(AlerteModuleSuivieMediaSeuil alerteModuleSuivieMediaSeuil){
+        System.out.println(alerteModuleSuivieMediaSeuil);
+        vigie.setListAlerte(alerteModuleSuivieMediaSeuil);
+    }
+
+    public void setNbMentionMedia(Media mediaMentionne){
+        if(nbMentionMedia.get(mediaMentionne)!=null){
+            int r = nbMentionMedia.get(mediaMentionne) + 1;
+            nbMentionMedia.put(mediaMentionne,r);
+            //alerte à la vigie s'il y a au moins 3 mentions dun même media dans une publication de TMC
+            if (r>2){
+                if((float)r/ mediaSuivi.getListPublication().size() > 0.5f){
+                    LocalDateTime date = LocalDateTime.now();
+                    AlerteModuleSuivieMediaSeuil alerteModuleSuivieMediaSeuil = new AlerteModuleSuivieMediaSeuil(mediaSuivi, mediaMentionne,date,(float)r/ mediaSuivi.getListPublication().size());
+                    notificationVigie(alerteModuleSuivieMediaSeuil);
+                }
+            }
         }
         else{
-            nbMentionMedia.put(mediaMentionnant,1);
+            nbMentionMedia.put(mediaMentionne,1);
         }
     }
 
-    public void setNbMentionPersonne(Personnalite personneMentionnant){
-        if(nbMentionPersonne.get(personneMentionnant)!=null){
-            int r = nbMentionPersonne.get(personneMentionnant) + 1;
-            nbMentionPersonne.put(personneMentionnant,r);
+    public void setNbMentionPersonne(Personnalite personneMentionnee){
+        if(nbMentionPersonne.get(personneMentionnee)!=null){
+            int r = nbMentionPersonne.get(personneMentionnee) + 1;
+            nbMentionPersonne.put(personneMentionnee,r);
+            //alerte à la vigie s'il y a au moins 3 mentions dune même personne dans une publication de TMC
+            if (r>2){
+                if((float)r/ mediaSuivi.getListPublication().size() > 0.5f){
+                    LocalDateTime date = LocalDateTime.now();
+                    AlerteModuleSuivieMediaSeuil alerteModuleSuivieMediaSeuil = new AlerteModuleSuivieMediaSeuil(mediaSuivi, personneMentionnee,date,(float)r/ mediaSuivi.getListPublication().size());
+                    notificationVigie(alerteModuleSuivieMediaSeuil);
+                }
+            }
         }
         else{
-            nbMentionPersonne.put(personneMentionnant,1);
+            nbMentionPersonne.put(personneMentionnee,1);
         }
     }
 
-    public void setNbMentionOrganisation(Organisation organisationMentionnant){
-        if(nbMentionOrganisation.get(organisationMentionnant)!=null){
-            int r = nbMentionOrganisation.get(organisationMentionnant) + 1;
-            nbMentionOrganisation.put(organisationMentionnant,r);
+    public void setNbMentionOrganisation(Organisation organisationMentionnee){
+        if(nbMentionOrganisation.get(organisationMentionnee)!=null){
+            int r = nbMentionOrganisation.get(organisationMentionnee) + 1;
+            nbMentionOrganisation.put(organisationMentionnee,r);
+            //alerte à la vigie s'il y a au moins 3 mentions dune même organisation dans une publication de TMC
+            if (r>2){
+                if((float)r/ mediaSuivi.getListPublication().size() > 0.5f){
+                    LocalDateTime date = LocalDateTime.now();
+                    AlerteModuleSuivieMediaSeuil alerteModuleSuivieMediaSeuil = new AlerteModuleSuivieMediaSeuil(mediaSuivi, organisationMentionnee,date,(float)r/ mediaSuivi.getListPublication().size());
+                    notificationVigie(alerteModuleSuivieMediaSeuil);
+                }
+            }
         }
         else{
-            nbMentionOrganisation.put(organisationMentionnant,1);
+            nbMentionOrganisation.put(organisationMentionnee,1);
         }
     }
 

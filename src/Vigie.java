@@ -20,7 +20,7 @@ public class Vigie {
         return Holder.INSTANCE;
     }
 
-    public void setListAlerteModuleSuiviePersonne(Alerte alerte){
+    public void setListAlerte(Alerte alerte){
         listAlerte.add(alerte);
     }
 
