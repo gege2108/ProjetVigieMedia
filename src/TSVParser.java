@@ -5,13 +5,26 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+/**
+ * La classe TSVParser permet de parser plusieurs fichiers TSV (Tab-Separated Values)
+ * afin de créer des objets
+ */
+
 public class TSVParser {
 
+    /**
+     * Constructeur par défaut.
+     */
     public TSVParser(){
     }
 
 
-    //Parsing pour les medias
+    /**
+     * Parse le fichier medias.tsv pour générer une liste d'objets {@link Media}.
+     * Gère les cas où certaines colonnes sont manquantes ou mal remplies.
+     *
+     * @return une liste d'objets {@link Media}.
+     */
     public List<Media> mediaParser(){
         String pathMedia = "C:\\Users\\germa\\OneDrive\\Documents\\Travail\\ET3\\S6\\Java\\projetJava\\data\\medias.tsv";
 
@@ -88,13 +101,25 @@ public class TSVParser {
         return listMedia;
     }
 
-    //TODO implementer la fonction organisationParser
+    /**
+     * Parse les fichiers organisations.tsv, organisation-media.tsv et organisation-organisation.tsv.
+     *
+     * Cette méthode crée les objets {@link Organisation} à partir des données,
+     * puis établit les relations de possession entre organisations et médias,
+     * ainsi que les relations hiérarchiques entre les organisations.
+     *
+     * Si une organisation n'existe pas encore dans les listes passées,
+     * elle est ajouté·e.
+     * Même chose pour les médias.
+     *
+     * @param listMedia la liste des médias existants, utilisée pour associer les relations.
+     * @return une liste complète d'objets {@link Organisation}, avec leurs liens établis.
+     */
     public List<Organisation> organisationParser(List<Media> listMedia){
 
 
         String pathOrganisation = "C:\\Users\\germa\\OneDrive\\Documents\\Travail\\ET3\\S6\\Java\\projetJava\\data\\organisations.tsv";
 
-        // Liste pour stocker les colonnes
         List<String> ListNomOrganisation = new ArrayList<>();
         List<String> ListCommentaire = new ArrayList<>();
 
@@ -104,14 +129,11 @@ public class TSVParser {
             while ((ligne = br.readLine()) != null && compteur < 80) {
                 String[] colonnesOrganisation = ligne.split("\t");
 
-                // Déclarez des tableaux temporaires pour chaque type de colonne
                 String[] colonneNom = new String[1];
                 String[] colonneCommentaire = new String[1];
 
 
-                // Assurez-vous qu'il y a au moins 2 colonnes
                 if (colonnesOrganisation.length < 2) {
-                    // Ajouter des valeurs par défaut pour les colonnes manquantes
                     String[] colonnesOrganisationAjustees = new String[2];
                     System.arraycopy(colonnesOrganisation, 0, colonnesOrganisationAjustees, 0, colonnesOrganisation.length);
                     for (int i = colonnesOrganisation.length; i < 2; i++) {
@@ -122,11 +144,9 @@ public class TSVParser {
 
 
 
-                //valeurs pour les tableaux temporaires
                 colonneNom[0] = colonnesOrganisation[0];
                 colonneCommentaire[0] = colonnesOrganisation[1];
 
-                // Ajoutez les valeurs aux listes
                 ListNomOrganisation.add(colonneNom[0]);
                 ListCommentaire.add(colonneCommentaire[0]);
 
@@ -146,10 +166,8 @@ public class TSVParser {
         }
 
 
-        //Parsing pour implementer les instances de possedeMedia pour chaque organisation
         String pathPersonneOrganisation = "C:\\Users\\germa\\OneDrive\\Documents\\Travail\\ET3\\S6\\Java\\projetJava\\data\\organisation-media.tsv";
 
-        // Liste pour stocker chaques colonnes
         List<String> origineOrganisationMedia = new ArrayList<>();
         List<String> qualificatifOrganisationMedia = new ArrayList<>();
         List<String> valeurOrganisationMedia = new ArrayList<>();
@@ -260,8 +278,17 @@ public class TSVParser {
 
 
 
-    //Parsing pour les personnalites
-    //TODO renommer en personnalitesParser et rajouter le paramtre listOrganisation
+    /**
+     * Parse les fichiers personnalites.tsv, personnalite-organisation.tsv et personnalite-media.tsv.
+     *
+     * Cette méthode permet de créer des objets {@link Personnalite} et d'établir si
+     * elles possèdent des médias ou des organisations.
+     *
+     *
+     * @param listMedia        la liste des médias utilisés pour créer les liens.
+     * @param listOrganisation la liste des organisations utilisées pour créer les liens.
+     * @return une liste d'objets {@link Personnalite} avec leurs relations renseignées.
+     */
     public List<Personnalite> personnalitesOrganisationParser(List<Media> listMedia,List<Organisation> listOrganisation){
         // Chemin vers le fichier TSV
         // Expliquer à la prof qu'il faut mettre le bon path

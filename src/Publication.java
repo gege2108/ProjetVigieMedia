@@ -5,16 +5,36 @@ import java.util.Map;
 import java.time.format.DateTimeFormatter;
 
 
-//TODO rajouter la date
+/**
+ * Classe abstraite représentant une publication pouvant mentionner
+ * des personnalités, des organisations et des médias.
+ * Chaque publication possède un titre, un type, une date de publication.
+ */
 
 public abstract class Publication {
+    /** Liste des personnalités mentionnées dans la publication */
     private List<Personnalite> listMentionPersonne;
+
+    /** Liste des organisations mentionnées dans la publication */
     private List<Organisation> listMentionOrganisation;
+
+    /** Liste des médias mentionnés dans la publication */
     private List<Media> listMentionMedia;
+
+    /** Titre de la publication */
     private String titre;
+
+    /** Type de publication (ex : article, interview, communiqué...) */
     private String typePublication;
+
+    /** Date et heure de publication */
     private LocalDateTime datePublication;
 
+    // === CONSTRUCTEURS ===
+
+    /**
+     * Constructeur de base avec titre et date.
+     */
     public Publication(String titre,LocalDateTime datePublication) {
         this.titre = titre;
         this.typePublication = "";
@@ -24,6 +44,9 @@ public abstract class Publication {
         this.datePublication = datePublication;
     }
 
+    /**
+     * Constructeur avec titre, type et date.
+     */
     public Publication(String titre, String typePublication,LocalDateTime datePublication) {
         this.titre = titre;
         this.typePublication = typePublication;
@@ -33,6 +56,10 @@ public abstract class Publication {
         this.datePublication = datePublication;
     }
 
+
+    /**
+     * Constructeur avec personnalités et organisations mentionnées.
+     */
     public Publication(String titre, List<Personnalite> listMentionPersonne, List<Organisation> listMentionOrganisation,String typePublication,LocalDateTime datePublication) {
         this.listMentionPersonne = listMentionPersonne;
         this.listMentionOrganisation = listMentionOrganisation;
@@ -42,6 +69,10 @@ public abstract class Publication {
         this.datePublication = datePublication;
     }
 
+
+    /**
+     * Constructeur avec organisations uniquement.
+     */
     public Publication(List<Organisation> listMentionOrganisation, String titre, String typePublication,LocalDateTime datePublication) {
         this.listMentionPersonne = new ArrayList<>();
         this.listMentionOrganisation = listMentionOrganisation;
@@ -51,6 +82,10 @@ public abstract class Publication {
         this.datePublication = datePublication;
     }
 
+
+    /**
+     * Constructeur avec personnalités uniquement.
+     */
     public Publication(String titre, List<Personnalite> listMentionPersonne,String typePublication,LocalDateTime datePublication) {
         this.listMentionPersonne = listMentionPersonne;
         this.listMentionOrganisation = new ArrayList<>();
@@ -60,7 +95,11 @@ public abstract class Publication {
         this.datePublication = datePublication;
     }
 
-    //mentionne media
+
+
+    /**
+     * Constructeur avec médias uniquement.
+     */
     public Publication(String titre,String typePublication,List<Media> listMentionMedia,LocalDateTime datePublication) {
         this.listMentionPersonne = new ArrayList<>();
         this.listMentionOrganisation = new ArrayList<>();
@@ -70,7 +109,9 @@ public abstract class Publication {
         this.datePublication = datePublication;
     }
 
-    //mentionne media et organisation
+    /**
+     * Constructeur avec médias et organisations.
+     */
     public Publication(List<Media> listMentionMedia,String titre, List<Organisation> listMentionOrganisation,String typePublication,LocalDateTime datePublication) {
         this.listMentionPersonne = new ArrayList<>();
         this.listMentionOrganisation = listMentionOrganisation;
@@ -80,7 +121,9 @@ public abstract class Publication {
         this.datePublication = datePublication;
     }
 
-    //mentionne media et personne
+    /**
+     * Constructeur avec médias et personnalités.
+     */
     public Publication(List<Media> listMentionMedia,String titre,String typePublication, List<Personnalite> listMentionPersonne,LocalDateTime datePublication) {
         this.listMentionPersonne = listMentionPersonne;
         this.listMentionOrganisation = new ArrayList<>();
@@ -90,7 +133,9 @@ public abstract class Publication {
         this.datePublication = datePublication;
     }
 
-    //mentionne media, personne et organisation
+    /**
+     * Constructeur avec médias, personnalités et organisations.
+     */
     public Publication(List<Media> listMentionMedia,String titre,String typePublication, List<Personnalite> listMentionPersonne, List<Organisation> listMentionOrganisation,LocalDateTime datePublication) {
         this.listMentionPersonne = listMentionPersonne;
         this.listMentionOrganisation = listMentionOrganisation;
@@ -100,6 +145,8 @@ public abstract class Publication {
         this.datePublication = datePublication;
     }
 
+
+    // === GETTERS ===
 
     public List<Personnalite> getMentionPersonne() {
         return listMentionPersonne;
@@ -124,6 +171,8 @@ public abstract class Publication {
     public LocalDateTime getDatePublication(){
         return datePublication;
     }
+
+    // === SETTERS ===
 
     public void setMentionPersonne(List<Personnalite> listMentionPersonne) {
         this.listMentionPersonne = listMentionPersonne;
@@ -161,6 +210,12 @@ public abstract class Publication {
         this.datePublication = datePublication;
     }
 
+
+    // === AUTRES MÉTHODES ===
+
+    /**
+     * Retourne une chaîne décrivant la publication et les entités mentionnées.
+     */
 
     @Override
     public String toString() {

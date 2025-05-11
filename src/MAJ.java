@@ -1,15 +1,35 @@
 import java.util.List;
 
+/**
+ * La classe {@code MAJ} met à jour les personnes/organisations possedant des organisations/medias en gerant les rachats de parts.
+ * Elle gère aussi les erreurs eventuelle lors des rachats (pourcentage de rachat superieur à celui que possede le vendeur, pourcentage de rachat negatif ou nul etc...)
+ */
+
 public class MAJ {
+    /** liste des medias disponibles dans la base de donnee*/
     private List<Media> listMedia;
+
+    /** listOrganisation liste des organsisations dans la base de donnee*/
     private List<Organisation> listOrganisation;
+
+    /** liste des personnes disponibles dans la base de donnee*/
     private List<Personnalite>  listPersonnalite;
 
+
+    /**
+     * Seul constructeur de la classe, prend en paramètre la liste de chacune des entites
+     * utiles pour le rachat ( Media, Organisation et Personne)
+     * @param listMedia liste des medias disponibles dans la base de donnee
+     * @param listOrganisation liste des organsisations dans la base de donnee
+     * @param listPersonnalite liste des personnes disponibles dans la base de donnee
+     */
     public MAJ(List<Media> listMedia, List<Organisation> listOrganisation, List<Personnalite> listPersonnalite){
         this.listMedia = listMedia;
         this.listOrganisation = listOrganisation;
         this.listPersonnalite = listPersonnalite;
     }
+
+    // --------------------- GETTERS -----------------------
 
     public List<Media> getListMedia(){
         return listMedia;
@@ -23,7 +43,16 @@ public class MAJ {
         return listPersonnalite;
     }
 
-    //Cas où une personne rachete un media à une autre personne
+
+    // --------------------- RACHATS -----------------------
+
+    /**
+     *Cas où une personne rachète des parts d'un media à une autre personne
+     * @param nomAcheteur String représentant le nom de la personne acheteuse
+     * @param nomVendeur String représentant le nom de la personne vendeuse
+     * @param nomMedia String représentant le nom du media acheté
+     * @param pourcentageRachat nombre représentant le pourcentage de rachat du média
+     */
     public void rachatPersonnalitePersonnaliteMedia(String nomAcheteur, String nomVendeur, String nomMedia, float pourcentageRachat){
         if(pourcentageRachat<=0.0){
             System.out.println("Le pourcentage doit etre positif !");
@@ -123,7 +152,13 @@ public class MAJ {
     }
 
 
-    //Cas où une personne rachete un media à une organisation
+    /**
+     *Cas où une personne rachète des parts d'un media à une organisation
+     * @param nomAcheteur String représentant le nom de la personne acheteuse
+     * @param nomVendeur String représentant le nom de l'organisation vendeuse
+     * @param nomMedia String représentant le nom du media acheté
+     * @param pourcentageRachat nombre représentant le pourcentage de rachat du média
+     */
     public void rachatPersonnaliteOrganisationMedia(String nomAcheteur, String nomVendeur, String nomMedia, float pourcentageRachat){
 
 
@@ -234,7 +269,13 @@ public class MAJ {
 
 
 
-    //Cas où une organisation rachete un media à une organisation
+    /**
+     *Cas où une organisation rachète des parts d'un media à une autre organisation
+     * @param nomAcheteur String représentant le nom de l'organisation acheteuse
+     * @param nomVendeur String représentant le nom de l'organisation vendeuse
+     * @param nomMedia String représentant le nom du media acheté
+     * @param pourcentageRachat nombre représentant le pourcentage de rachat du média
+     */
     public void rachatOrganisationOrganisationMedia(String nomAcheteur, String nomVendeur, String nomMedia, float pourcentageRachat){
 
 
@@ -344,7 +385,13 @@ public class MAJ {
 
 
 
-    //Cas où une organisation rachete un media à une personne
+    /**
+     *Cas où une personne rachète des parts d'un media à une organisation
+     * @param nomAcheteur String représentant le nom de l'organisation acheteuse
+     * @param nomVendeur String représentant le nom de la personne vendeuse
+     * @param nomMedia String représentant le nom du media acheté
+     * @param pourcentageRachat nombre représentant le pourcentage de rachat du média
+     */
     public void rachatOrganisationPersonnaliteMedia(String nomAcheteur, String nomVendeur, String nomMedia, float pourcentageRachat){
 
 
@@ -456,7 +503,13 @@ public class MAJ {
 
 
 
-    //cas où une personne rachete des parts d'une organisations à une autre personne
+    /**
+     *Cas où une personne rachète des parts d'une organisation à une personne
+     * @param nomAcheteur String représentant le nom de la personne acheteuse
+     * @param nomVendeur String représentant le nom de la personne vendeuse
+     * @param nomOrganisation String représentant le nom de l'organisation achetée
+     * @param pourcentageRachat nombre représentant le pourcentage de rachat de l'organisation
+     */
     public void rachatPersonnalitePersonnaliteOrganisation(String nomAcheteur, String nomVendeur, String nomOrganisation, float pourcentageRachat){
 
 
@@ -570,7 +623,13 @@ public class MAJ {
 
 
 
-    //cas où une personne rachete des parts d'une organisations à une autre personne
+    /**
+     *Cas où une personne rachète des parts d'une organisation à une organisation
+     * @param nomAcheteur String représentant le nom de la personne acheteuse
+     * @param nomVendeur String représentant le nom de l'organisation vendeuse
+     * @param nomOrganisation String représentant le nom de l'organisation achetée
+     * @param pourcentageRachat nombre représentant le pourcentage de rachat de l'organisation
+     */
     public void rachatPersonnaliteOrganisationOrganisation(String nomAcheteur, String nomVendeur, String nomOrganisation, float pourcentageRachat){
 
 
@@ -679,7 +738,13 @@ public class MAJ {
 
 
 
-    //cas où une personne rachete des parts d'une organisations à une autre personne
+    /**
+     *Cas où une organisation rachète des parts d'une organisation à une autre organisation
+     * @param nomAcheteur String représentant le nom de l'organisation acheteuse
+     * @param nomVendeur String représentant le nom de l'organisation vendeuse
+     * @param nomOrganisation String représentant le nom de l'organisation achetée
+     * @param pourcentageRachat nombre représentant le pourcentage de rachat de l'organisation
+     */
     public void rachatOrganisationOrganisationOrganisation(String nomAcheteur, String nomVendeur, String nomOrganisation, float pourcentageRachat){
 
 
@@ -791,7 +856,13 @@ public class MAJ {
 
 
 
-    //cas où une personne rachete des parts d'une organisations à une autre personne
+    /**
+     *Cas où une organisation rachète des parts d'une organisation à une personne
+     * @param nomAcheteur String représentant le nom de l'organisation acheteuse
+     * @param nomVendeur String représentant le nom de la personne vendeuse
+     * @param nomOrganisation String représentant le nom de l'organisation achetée
+     * @param pourcentageRachat nombre représentant le pourcentage de rachat de l'organisation
+     */
     public void rachatOrganisationPersonnaliteOrganisation(String nomAcheteur, String nomVendeur, String nomOrganisation, float pourcentageRachat){
 
 

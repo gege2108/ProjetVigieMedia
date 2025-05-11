@@ -1,17 +1,35 @@
 import java.util.Map;
 import java.util.HashMap;
+import java.util.Objects;
 import java.util.TreeMap;
 
+/**
+ * La classe Organisation représente une entité qui peut posséder d'autres organisations et des médias.
+ * Elle est comparable à d'autres instances d'Organisation via le nom (ordre alphabétique).
+ */
+public class Organisation implements Comparable<Organisation> {
 
-public class Organisation implements Comparable<Organisation>{
+    /** Nom de l'organisation */
     private String nomOrganisation;
-    private String qualificatifOrganisation;
-    private String qualificatifMedia;
-    private  Map<Organisation,Float> possedeOrganisation;
-    private Map<Media,Float> possedeMedia;
-    private String commentaire;
-    //TODO implementer un attribut commentaire et modifier ainsi le toString et le parsing
 
+    /** Qualificatif utilisé pour les organisations possédées (ex: "contrôle", "égal à") */
+    private String qualificatifOrganisation;
+
+    /** Qualificatif utilisé pour les médias possédés */
+    private String qualificatifMedia;
+
+    /** Map des organisations possédées avec le pourcentage de possession*/
+    private Map<Organisation, Float> possedeOrganisation;
+
+    /** Map des médias possédés avec le pourcentage de possession*/
+    private Map<Media, Float> possedeMedia;
+
+    /** Commentaire associé à cette organisation*/
+    private String commentaire;
+
+    /**
+     * Constructeur basique avec nom uniquement.
+     */
     public Organisation(String nomOrganisation){
         this.nomOrganisation = nomOrganisation;
         this.possedeOrganisation = new TreeMap<>();
@@ -20,7 +38,11 @@ public class Organisation implements Comparable<Organisation>{
         this.qualificatifOrganisation = "";
         this.qualificatifMedia = "";
     }
-    public Organisation(String nomOrganisation,String commentaire){
+
+    /**
+     * Constructeur avec nom et commentaire.
+     */
+    public Organisation(String nomOrganisation, String commentaire){
         this.nomOrganisation = nomOrganisation;
         this.possedeOrganisation = new TreeMap<>();
         this.possedeMedia = new TreeMap<>();
@@ -29,7 +51,12 @@ public class Organisation implements Comparable<Organisation>{
         this.qualificatifMedia = "";
     }
 
-    public Organisation(String nomOrganisation, Map<Organisation,Float> possedeOrganisation,Map<Media,Float> possedeMedia,String commentaire,String qualificatifOrganisation,String qualificatifMedia){
+    /**
+     * Constructeur complet avec tous les attributs définis.
+     */
+    public Organisation(String nomOrganisation, Map<Organisation,Float> possedeOrganisation,
+                        Map<Media,Float> possedeMedia, String commentaire,
+                        String qualificatifOrganisation, String qualificatifMedia){
         this.nomOrganisation = nomOrganisation;
         this.possedeOrganisation = possedeOrganisation;
         this.possedeMedia = possedeMedia;
@@ -38,47 +65,32 @@ public class Organisation implements Comparable<Organisation>{
         this.qualificatifMedia = qualificatifMedia;
     }
 
-    //TODO definir les getters et les setters comme dans Media
+    // --------------------- GETTERS -----------------------
 
-    public String getNomOrganisation(){
-        return nomOrganisation;
-    }
+    public String getNomOrganisation(){ return nomOrganisation; }
 
-    public Map<Organisation,Float> getPossedeOrganisation(){
-        return possedeOrganisation;
-    }
+    public Map<Organisation,Float> getPossedeOrganisation(){ return possedeOrganisation; }
 
-    public Map<Media,Float> getPossedeMedia(){
-        return possedeMedia;
-    }
+    public Map<Media,Float> getPossedeMedia(){ return possedeMedia; }
 
-    public String getCommentaire(String commentaire){
-        return commentaire;
-    }
 
-    public String getQualificatifOrganisation(){
-        return qualificatifOrganisation;
-    }
+    public String getQualificatifOrganisation(){ return qualificatifOrganisation; }
 
-    public String getQualificatifMedia(){
-        return qualificatifMedia;
-    }
+    public String getQualificatifMedia(){ return qualificatifMedia; }
 
-    public void setNomOrganisation(String nomOrganisation){
-        this.nomOrganisation = nomOrganisation;
-    }
+    // --------------------- SETTERS -----------------------
+
+    public void setNomOrganisation(String nomOrganisation){ this.nomOrganisation = nomOrganisation; }
 
     public void setPossedeOrganisation(Organisation organisation, Float pourcentage){
-        this.possedeOrganisation.put(organisation,pourcentage);
+        this.possedeOrganisation.put(organisation, pourcentage);
     }
 
-    public void setPossedeMedia(Media media,Float pourcentage){
-        this.possedeMedia.put(media,pourcentage);
+    public void setPossedeMedia(Media media, Float pourcentage){
+        this.possedeMedia.put(media, pourcentage);
     }
 
-    public void setCommentaire(String commentaire){
-        this.commentaire = commentaire;
-    }
+    public void setCommentaire(String commentaire){ this.commentaire = commentaire; }
 
     public void setQualificatifOrganisation(String qualificatifOrganisation){
         this.qualificatifOrganisation = qualificatifOrganisation;
@@ -88,14 +100,21 @@ public class Organisation implements Comparable<Organisation>{
         this.qualificatifMedia = qualificatifMedia;
     }
 
+    // -------------------- COMPARAISON --------------------
+
+    /**
+     * Compare les organisations par ordre alphabétique de leur nom.
+     */
     @Override
     public int compareTo(Organisation other) {
-        // Compare les organisations par leur nom
         return this.nomOrganisation.compareTo(other.nomOrganisation);
     }
 
+    // -------------------- AFFICHAGES ---------------------
 
-
+    /**
+     * Représentation textuelle complète de l'organisation avec ses possessions et son commentaire.
+     */
     @Override
     public String toString(){
         StringBuilder sb = new StringBuilder();
@@ -105,14 +124,13 @@ public class Organisation implements Comparable<Organisation>{
             sb.append(",");
             if(qualificatifOrganisation.equals("égal à")){
                 sb.append(" possède");
-            }
-            else{
+            } else {
                 sb.append(qualificatifOrganisation).append(" ");
             }
-            if(entry.getKey()!=null){
+            if(entry.getKey() != null){
                 sb.append(entry.getKey().getNomOrganisation());
             }
-            if(entry.getValue()!=null){
+            if(entry.getValue() != null){
                 sb.append(" à ").append(entry.getValue()).append("%");
             }
         }
@@ -121,26 +139,28 @@ public class Organisation implements Comparable<Organisation>{
             sb.append(", ");
             if(qualificatifMedia.equals("égal à")){
                 sb.append(" possède");
-            }
-            else{
+            } else {
                 sb.append(qualificatifMedia).append(" ");
             }
-            if(entry.getKey()!=null){
+            if(entry.getKey() != null){
                 sb.append(entry.getKey().getNomMedia());
             }
-            if(entry.getValue()!=null){
+            if(entry.getValue() != null){
                 sb.append(" à ").append(entry.getValue()).append("%");
             }
         }
 
-        if(!commentaire.isEmpty()){
+        if (!commentaire.isEmpty()) {
             sb.append("\n commentaire : ").append(commentaire);
         }
         return sb.toString();
     }
 
+    /**
+     * Convertit une chaîne pourcentage (ex: "45%") en Float.
+     */
     public Float conversionPourcentage(String pourcentage){
-        if(pourcentage == ""){
+        if(pourcentage.equals("")){
             return null;
         }
         else{
@@ -149,31 +169,35 @@ public class Organisation implements Comparable<Organisation>{
         }
     }
 
+    /**
+     * Affiche la relation de possession d’un média particulier.
+     */
     public String afficheMediaPossede(Media media){
         StringBuilder sb = new StringBuilder();
         sb.append(nomOrganisation);
         for (Map.Entry<Media, Float> entry : possedeMedia.entrySet()) {
             if (entry.getKey().equals(media)){
-                sb.append(",").append(" ");
+                sb.append(", ");
                 if(qualificatifMedia.equals("égal à")){
-                    sb.append("possède").append(" ");
-                }
-                else{
+                    sb.append("possède ");
+                } else {
                     sb.append(qualificatifMedia).append(" ");
                 }
-                if(entry.getKey()!=null){
+                if(entry.getKey() != null){
                     sb.append(entry.getKey().getNomMedia()).append(" ");
                 }
-                if(entry.getValue()!=null){
-                    sb.append("à ").append(entry.getValue()).append("%").append(" ");
+                if(entry.getValue() != null){
+                    sb.append("à ").append(entry.getValue()).append("% ");
                 }
             }
         }
         return sb.toString();
     }
 
+    /**
+     * Affiche la relation de possession avec une organisation donnée.
+     */
     public String afficheOrganisationPossede(Organisation organisation){
-
         StringBuilder sb = new StringBuilder();
         sb.append("L'organisation ").append(nomOrganisation);
         boolean trouve = false;
@@ -181,18 +205,17 @@ public class Organisation implements Comparable<Organisation>{
         for (Map.Entry<Organisation, Float> entry : possedeOrganisation.entrySet()) {
             if (entry.getKey().equals(organisation)){
                 trouve = true;
-                sb.append(",").append(" ");
+                sb.append(", ");
                 if(qualificatifOrganisation.equals("égal à")){
-                    sb.append("possède ").append(" ");
-                }
-                else{
+                    sb.append("possède ");
+                } else {
                     sb.append(qualificatifOrganisation).append(" ");
                 }
-                if(entry.getKey()!=null){
+                if(entry.getKey() != null){
                     sb.append(entry.getKey().getNomOrganisation()).append(" ");
                 }
-                if(entry.getValue()!=null){
-                    sb.append("à ").append(entry.getValue()).append("%").append(" ");
+                if(entry.getValue() != null){
+                    sb.append("à ").append(entry.getValue()).append("% ");
                 }
             }
         }
@@ -203,12 +226,12 @@ public class Organisation implements Comparable<Organisation>{
         return sb.toString();
     }
 
+    /**
+     * Affiche tous les médias possédés directement et indirectement par l'organisation.
+     */
     public String afficheToutMediaPossede(){
-
         StringBuilder sb = new StringBuilder();
         sb.append(nomOrganisation);
-
-
 
         if(!possedeMedia.isEmpty()) {
             for (Map.Entry<Media, Float> entry : possedeMedia.entrySet()) {
@@ -232,14 +255,13 @@ public class Organisation implements Comparable<Organisation>{
                 sb.append(",");
                 if(qualificatifOrganisation.equals("égal à")){
                     sb.append("possède l'organisation ");
-                }
-                else{
+                } else {
                     sb.append(qualificatifOrganisation).append(" l'organisation ");
                 }
-                if(entry.getKey()!=null){
+                if(entry.getKey() != null){
                     sb.append(entry.getKey().getNomOrganisation());
                 }
-                if(entry.getValue()!=null){
+                if(entry.getValue() != null){
                     sb.append(" à ").append(entry.getValue()).append("%");
                 }
 
@@ -249,24 +271,25 @@ public class Organisation implements Comparable<Organisation>{
                     sb.append(" qui ");
                     if(entry.getKey().getQualificatifMedia().equals("égal à")){
                         sb.append("possède ");
-                    }
-                    else{
+                    } else {
                         sb.append(entry.getKey().getQualificatifMedia()).append(" ");
                     }
-                    if(entry2.getKey()!=null){
+                    if(entry2.getKey() != null){
                         sb.append(entry2.getKey().getNomMedia());
                     }
-                    if(entry2.getValue()!=null){
+                    if(entry2.getValue() != null){
                         sb.append(" à ").append(entry2.getValue()).append("%").append("\n");
                     }
                 }
             }
         }
 
-
         return sb.toString();
     }
 
+    /**
+     * Affiche toutes les organisations possédées directement ou indirectement par cette organisation.
+     */
     public String afficheTouteOrganisationPossede(){
 
         StringBuilder sb = new StringBuilder();
@@ -282,14 +305,14 @@ public class Organisation implements Comparable<Organisation>{
 
 
 
-                            if (entry.getValue()!=0.00f){
-                                sb.append(" possède").append(" ");
-                                if(entry.getKey()!=null){
-                                    sb.append(entry.getKey().getNomOrganisation());
-                                }
-                                sb.append(" à ").append(entry.getValue()).append("%");
-                                trouve = true;
+                        if (entry.getValue()!=0.00f){
+                            sb.append(" possède").append(" ");
+                            if(entry.getKey()!=null){
+                                sb.append(entry.getKey().getNomOrganisation());
                             }
+                            sb.append(" à ").append(entry.getValue()).append("%");
+                            trouve = true;
+                        }
 
                     }
 
@@ -335,39 +358,12 @@ public class Organisation implements Comparable<Organisation>{
                                         }
 
                                     }
-
-
-                                    /*
-
-                                    else{
-                                        sb.append(" qui ");
-                                        sb.append(entry.getKey().getQualificatifOrganisation()).append(" ");
-                                        if(entry2.getKey()!=null){
-                                            sb.append(entry2.getKey().getNomOrganisation());
-                                        }
-                                        trouve = true;
-                                    }
-                                    */
-
-
-
-
-
-
                                 }
-
                             }
-
-
                         }
-
                     }
-
                 }
-
-
-                }
-
+            }
         }
 
         if (!trouve){
@@ -378,4 +374,5 @@ public class Organisation implements Comparable<Organisation>{
 
         return sb.toString();
     }
+
 }

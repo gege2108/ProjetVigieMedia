@@ -3,6 +3,12 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 
+/**
+ * Classe qui permet d'afficher les instructions de la console lors de l'utilisation de l'utilisateur et qui
+ * permet de s'adapter en fonction des decisions de celui-ci.
+ *
+ */
+
 public class InteractionUtilisateur {
     private List<Media> listMedia;
     private List<Organisation> listOrganisation;

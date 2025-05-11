@@ -3,15 +3,55 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.TreeMap;
 
-public class ModuleSuivieMedia {
-    private final Media mediaSuivi;
-    private Map<Media,Integer> nbMentionMedia;
-    private Map<Personnalite,Integer> nbMentionPersonne;
-    private Map<Organisation,Integer> nbMentionOrganisation;
+
+/**
+ * Représente le module de suivi d'un média spécifique(TMC), permettant maintient une liste du nombre de mentions
+ * par personne / organisation / média. Il permet également de suivre
+ * l'historique des rachats de médias et d'envoyer des alertes en cas de mentions importantes
+ * ou de changements de propriétaires.
+ *
+ * Le module gère les alertes via la vigie (instance de surveillance) et envoie des notifications
+ * si un seuil de pourcentage de mentions est atteint pour un média, une personnalité ou une organisation (pour cela il faut
+ * aussi que TMC le mentionne au moins 3 fois).
+ *
+ */
+
+public class ModuleSuivieMedia {/**
+ * Le média suivi par ce module.
+ */
+private final Media mediaSuivi;
+
+    /**
+     * Map des mentions par média.
+     */
+    private Map<Media, Integer> nbMentionMedia;
+
+    /**
+     * Map des mentions par personnalité.
+     */
+    private Map<Personnalite, Integer> nbMentionPersonne;
+
+    /**
+     * Map des mentions par organisation.
+     */
+    private Map<Organisation, Integer> nbMentionOrganisation;
+
+    /**
+     * Historique des rachats de ce média.
+     */
     private StringBuilder historiqueRachat;
+
+    /**
+     * Instance de la vigie utilisée pour les alertes.
+     */
     private Vigie vigie;
 
-    public ModuleSuivieMedia(Media mediaSuivi){
+    /**
+     * Crée un nouveau module de suivi pour un média spécifique.
+     *
+     * @param mediaSuivi le média à suivre(TMC dans mon projet)
+     */
+    public ModuleSuivieMedia(Media mediaSuivi) {
         this.mediaSuivi = mediaSuivi;
         nbMentionMedia = new TreeMap<>();
         nbMentionPersonne = new TreeMap<>();
@@ -20,15 +60,33 @@ public class ModuleSuivieMedia {
         vigie = Vigie.getInstance();
     }
 
-    public Vigie getVigie(){
+    /**
+     * Retourne l'instance de la vigie associée à ce module de suivi.
+     *
+     * @return l'instance de la vigie
+     */
+    public Vigie getVigie() {
         return vigie;
     }
 
+
+    /**
+     * Envoie une notification à la vigie en cas d'alerte générée par le module de suivi.
+     *
+     * @param alerteModuleSuivieMedia l'alerte générée
+     */
     public void notificationVigie(AlerteModuleSuivieMedia alerteModuleSuivieMedia){
         System.out.println(alerteModuleSuivieMedia);
         vigie.setListAlerte(alerteModuleSuivieMedia);
     }
 
+
+    /**
+     * Met à jour le nombre de mentions d'un média spécifique et envoie une alerte si
+     * un seuil de mentions et de pourcentage mentions est dépassé.
+     *
+     * @param mediaMentionne le média mentionné
+     */
     public void setNbMentionMedia(Media mediaMentionne){
         if(nbMentionMedia.get(mediaMentionne)!=null){
             int r = nbMentionMedia.get(mediaMentionne) + 1;
@@ -46,6 +104,13 @@ public class ModuleSuivieMedia {
             nbMentionMedia.put(mediaMentionne,1);
         }
     }
+
+    /**
+     * Met à jour le nombre de mentions d'un média spécifique et envoie une alerte si
+     * un seuil de mentions et de pourcentage mentions est dépassé.
+     *
+     * @param personneMentionnee la personnalité mentionnée
+     */
 
     public void setNbMentionPersonne(Personnalite personneMentionnee){
         if(nbMentionPersonne.get(personneMentionnee)!=null){
@@ -65,6 +130,13 @@ public class ModuleSuivieMedia {
         }
     }
 
+
+    /**
+     * Met à jour le nombre de mentions d'un média spécifique et envoie une alerte si
+     * un seuil de mentions et de pourcentage mentions est dépassé.
+     *
+     * @param organisationMentionnee l'organisation mentionnée
+     */
     public void setNbMentionOrganisation(Organisation organisationMentionnee){
         if(nbMentionOrganisation.get(organisationMentionnee)!=null){
             int r = nbMentionOrganisation.get(organisationMentionnee) + 1;
@@ -83,6 +155,16 @@ public class ModuleSuivieMedia {
         }
     }
 
+
+    /**
+     * Enregistre l'historique des rachats d'un média, en incluant une alerte si
+     * un nouveau propriétaire est détecté.
+     *
+     * @param rachat             l'événement de rachat
+     * @param nouveauProprietaire vrai si un nouveau propriétaire est détecté
+     * @param personneAlerte     nouveau proprietaire si le nouveau proprietaire est une personne, null sinon
+     * @param organisationAlerte nouveau proprietaire si le nouveau proprietaire est une organisation, null sinon
+     */
     public void setHistoriqueRachat(String rachat,boolean nouveauProprietaire,Personnalite personneAlerte,Organisation organisationAlerte){
         historiqueRachat.append(rachat).append("\n");
         if (nouveauProprietaire){
@@ -98,12 +180,16 @@ public class ModuleSuivieMedia {
         }
     }
 
-    //TODO fonction qui envoie une alerte si une nouvelle personne/organisation rachete un nouveau media + creer l'alerte
 
-
+    /**
+     * Affiche les mentions d'un média, d'une personnalité et d'une organisation associée
+     * sous forme de texte lisible.
+     *
+     * @return une chaîne de caractères présentant les mentions
+     */
     public String afficheMention(){
         StringBuilder sb = new StringBuilder();
-        sb.append(mediaSuivi.getNomMedia()).append(" est mentionne par :\n");
+        sb.append(mediaSuivi.getNomMedia()).append(" mentionne :\n");
         if (!nbMentionMedia.isEmpty()){
             sb.append("les medias :\n");
             for (Media key : nbMentionMedia.keySet()) {
@@ -128,6 +214,12 @@ public class ModuleSuivieMedia {
 
         return sb.toString();
     }
+
+    /**
+     * Retourne l'historique des rachats du média suivi (TMC) sous forme de chaîne de caractères.
+     *
+     * @return l'historique des rachats
+     */
 
     public String getHistoriqueRachat(){
         return historiqueRachat.toString();

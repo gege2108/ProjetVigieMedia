@@ -1,18 +1,42 @@
 import java.util.*;
 
 
-public class Media implements Comparable<Media>{
-    // Pas sur de l'attribut nomMedia finalement
+/**
+ * La classe Media représente un média (presse, télévision, site, radio, etc.)
+ * avec des informations associées.
+ * Implémente l'interface Comparable pour permettre un tri par ordre alphabétique des médias
+ * selon leur nom.
+ */
+public class Media implements Comparable<Media> {
+
+    /** Nom du média*/
     private String nomMedia;
+
+    /** Type de média (TV, site, presse, radio)*/
     private String type;
+
+    /** Périodicité de publication (quotidien, hebdo, etc.)*/
     private String periodicite;
+
+    /** Échelle géographique du média (France, Europe, etc.)*/
     private String echelle;
+
+    /** Gratuit ou payant*/
     private String prix;
+
+    /**"checked" si le média a disparu, chaîne vide sinon*/
     private String disparu;
+
+    /** Liste des publications associées*/
     private List<Publication> listPublication;
 
-
-    public Media(String nomMedia){
+    /**
+     * Constructeur minimal avec uniquement le nom du média.
+     * Les autres champs sont initialisés à une chaîne vide.
+     *
+     * @param nomMedia Nom du média
+     */
+    public Media(String nomMedia) {
         this.nomMedia = nomMedia;
         this.type = "";
         this.periodicite = "";
@@ -22,8 +46,17 @@ public class Media implements Comparable<Media>{
         this.listPublication = new ArrayList<>();
     }
 
-
-    public Media(String nomMedia,String type, String periodicite, String echelle, String prix, String disparu){
+    /**
+     * Constructeur complet permettant d'initialiser tous les champs.
+     *
+     * @param nomMedia    Nom du média
+     * @param type        Type du média
+     * @param periodicite Périodicité de publication
+     * @param echelle     Échelle géographique
+     * @param prix        Prix (gratuit ou payant)
+     * @param disparu     Statut de disparition ("checked" ou vide)
+     */
+    public Media(String nomMedia, String type, String periodicite, String echelle, String prix, String disparu) {
         this.nomMedia = nomMedia;
         this.type = type;
         this.periodicite = periodicite;
@@ -33,88 +66,78 @@ public class Media implements Comparable<Media>{
         this.listPublication = new ArrayList<>();
     }
 
-    public String getNomMedia(){
-        return nomMedia;
-    }
+    // ------------------- Getters -------------------
 
-    public String getType(){
-        return type;
-    }
+    /** @return le nom du média */
+    public String getNomMedia() { return nomMedia; }
 
-    public String getPeriodicite(){
-        return periodicite;
-    }
+    /** @return le type du média */
+    public String getType() { return type; }
 
-    public String getEchelle(){
-        return echelle;
-    }
+    /** @return la périodicité du média */
+    public String getPeriodicite() { return periodicite; }
 
-    public String getPrix(){
-        return prix;
-    }
+    /** @return l'échelle géographique du média */
+    public String getEchelle() { return echelle; }
 
-    public String getDisparu(){
-        return disparu;
-    }
+    /** @return le prix du média */
+    public String getPrix() { return prix; }
 
-    public List<Publication> getListPublication(){
-        return listPublication;
-    }
+    /** @return le statut de disparition du média */
+    public String getDisparu() { return disparu; }
 
+    /** @return la liste des publications du média */
+    public List<Publication> getListPublication() { return listPublication; }
 
+    // ------------------- Setters -------------------
 
+    /** Définit le nom du média  */
+    public void setNomMedia(String nomMedia) { this.nomMedia = nomMedia; }
 
-    // peut etre a changer car affichage par ordre lexicographique
+    /** Définit le type de média */
+    public void setType(String type) { this.type = type; }
 
+    /** Définit la périodicité du média */
+    public void setPeriodicite(String periodicite) { this.periodicite = periodicite; }
 
+    /** Définit l'échelle géographique du média */
+    public void setEchelle(String echelle) { this.echelle = echelle; }
 
+    /** Définit le prix (gratuit ou payant) */
+    public void setPrix(String prix) { this.prix = prix; }
 
+    /** Définit le statut de disparition du média */
+    public void setDisparu(String disparu) { this.disparu = disparu; }
 
-    // TODO implementer les setter et demander a l'utilisateur d'entrer un mdp administrateur
-    // Pour les Map modifier de sorte que les setters prennent un pourcentage et une
-    // Organisation/Personnalite en argument et que si l'Organisation/Personnalite existe
-    // modifier juste le pourcentage correspondant sinon rajouter une nouvelle entree dans la Map
-    // Convertir les float en Float dans les setters
-
-    // Pas sur d'implementer setNomMedia
-    public void setNomMedia(String nomMedia){
-        this.nomMedia = nomMedia;
-    }
-
-    public void setType(String type){
-        this.type = type;
-    }
-
-    public void setPeriodicite(String periodicite){
-        this.periodicite = periodicite;
-    }
-
-    public void setEchelle(String echelle){
-        this.echelle = echelle;
-    }
-
-    public void setPrix(String prix){
-        this.prix = prix;
-    }
-
-    public void setDisparu(String disparu){
-        this.disparu = disparu;
-    }
-
-    public void setListPublication(Publication publication){
+    /**
+     * Ajoute une publication à la liste des publications du média.
+     *
+     * @param publication La publication à ajouter
+     */
+    public void setListPublication(Publication publication) {
         this.listPublication.add(publication);
     }
 
-    public void afficheListPublication(){
-        if (listPublication.isEmpty()){
-            System.out.println("Le media " + nomMedia + " ne possede pas de publication.");
-        }
-        else{
+    /**
+     * Affiche dans la console toutes les publications associées au média.
+     * Si la liste est vide, un message indique l'absence de publication.
+     */
+    public void afficheListPublication() {
+        if (listPublication.isEmpty()) {
+            System.out.println("Le media " + nomMedia + " ne possède pas de publication.");
+        } else {
             for (int i = 0; i < listPublication.size(); i++) {
                 System.out.println(listPublication.get(i));
             }
         }
     }
+
+    /**
+     * Retourne une description textuelle complète du média,
+     * en précisant son type, périodicité, échelle, prix, et disparition.
+     *
+     * @return une chaîne représentant le média
+     */
 
     @Override
     public String toString(){
@@ -185,6 +208,13 @@ public class Media implements Comparable<Media>{
     }
 
 
+
+    /**
+     * Permet de comparer deux objets Media en fonction du nom du média.
+     *
+     * @param other le média à comparer
+     * @return un entier négatif, nul ou positif selon l'ordre lexicographique
+     */
     @Override
     public int compareTo(Media other) {
         // Compare les medias par leur nom

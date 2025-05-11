@@ -1,15 +1,34 @@
 import java.util.Map;
 import java.util.TreeMap;
 
-// Utiliser un Comparator avec les TreeMap pour afficher les personnes par ordre alphabetique
 
-public class Personnalite implements Comparable<Personnalite>{
+import java.util.Map;
+import java.util.TreeMap;
+
+/**
+ * Représente une personnalité publique qui peut posséder des parts dans des organisations et des médias.
+ * Elle est comparable par ordre alphabétique de nom.
+ */
+public class Personnalite implements Comparable<Personnalite> {
+    /** Nom de la personnalité */
     private String nomPersonnalite;
-    private String qualificatifOrganisation;
-    private String qualificatifMedia;
-    private Map<Organisation,Float> possedeOrganisation;
-    private Map<Media,Float> possedeMedia;
 
+    /** Qualificatif utilisé pour décrire la possession d'organisations (ex: "égal à", "plus de") */
+    private String qualificatifOrganisation;
+
+    /** Qualificatif utilisé pour décrire la possession de médias */
+    private String qualificatifMedia;
+
+    /** Map des organisations possédées avec les pourcentages correspondants */
+    private Map<Organisation, Float> possedeOrganisation;
+
+    /** Map des médias possédés avec les pourcentages correspondants */
+    private Map<Media, Float> possedeMedia;
+
+    /**
+     * Constructeur minimal avec seulement le nom.
+     * @param nomPersonnalite nom de la personnalité
+     */
     public Personnalite(String nomPersonnalite){
         this.nomPersonnalite = nomPersonnalite;
         this.qualificatifOrganisation = "";
@@ -18,7 +37,16 @@ public class Personnalite implements Comparable<Personnalite>{
         this.possedeMedia = new TreeMap<>();
     }
 
-    public Personnalite(String nomPersonnalite, String qualificatifOrganisation, String qualificatifMedia, Map<Organisation,Float> possedeOrganisation, Map<Media,Float> possedeMedia){
+    /**
+     * Constructeur complet.
+     * @param nomPersonnalite nom de la personnalité
+     * @param qualificatifOrganisation qualificatif pour les organisations
+     * @param qualificatifMedia qualificatif pour les médias
+     * @param possedeOrganisation organisations possédées avec pourcentage
+     * @param possedeMedia médias possédés avec pourcentage
+     */
+    public Personnalite(String nomPersonnalite, String qualificatifOrganisation, String qualificatifMedia,
+                        Map<Organisation,Float> possedeOrganisation, Map<Media,Float> possedeMedia){
         this.nomPersonnalite = nomPersonnalite;
         this.qualificatifOrganisation = qualificatifOrganisation;
         this.qualificatifMedia = qualificatifMedia;
@@ -26,10 +54,13 @@ public class Personnalite implements Comparable<Personnalite>{
         this.possedeMedia = possedeMedia;
     }
 
-    // TODO implementer les getters et les setters comme dans les classes Media et Organisation
-
+    /**
+     * Convertit une chaîne de type "12.5%" en Float.
+     * @param pourcentage chaîne représentant un pourcentage
+     * @return valeur float correspondante ou null si chaîne vide
+     */
     public Float conversionPourcentage(String pourcentage){
-        if(pourcentage == ""){
+        if(pourcentage.equals("")){
             return null;
         }
         else{
@@ -37,6 +68,8 @@ public class Personnalite implements Comparable<Personnalite>{
             return Float.parseFloat(temp);
         }
     }
+
+    // Getters
 
     public String getNomPersonnalite(){
         return nomPersonnalite;
@@ -58,6 +91,8 @@ public class Personnalite implements Comparable<Personnalite>{
         return possedeMedia;
     }
 
+    // Setters
+
     public void setNomPersonnalite(String nomPersonnalite) {
         this.nomPersonnalite = nomPersonnalite;
     }
@@ -78,7 +113,11 @@ public class Personnalite implements Comparable<Personnalite>{
         this.possedeMedia.put(media,pourcentage);
     }
 
-
+    /**
+     * Affiche la possession d'un média spécifique.
+     * @param media média ciblé
+     * @return chaîne descriptive
+     */
     public String afficheMediaPossede(Media media){
         StringBuilder sb = new StringBuilder();
         sb.append(nomPersonnalite);
@@ -87,9 +126,9 @@ public class Personnalite implements Comparable<Personnalite>{
         for (Map.Entry<Media, Float> entry : possedeMedia.entrySet()) {
             if (entry.getKey().equals(media)){
                 trouve = true;
-                sb.append(",").append(" ");
+                sb.append(", ");
                 if(qualificatifMedia.equals("égal à")){
-                    sb.append("possède").append(" ");
+                    sb.append("possède ");
                 }
                 else{
                     sb.append(qualificatifMedia).append(" ");
@@ -98,18 +137,23 @@ public class Personnalite implements Comparable<Personnalite>{
                     sb.append(entry.getKey().getNomMedia()).append(" ");
                 }
                 if(entry.getValue()!=null){
-                    sb.append("à ").append(entry.getValue()).append("%").append(" ");
+                    sb.append("à ").append(entry.getValue()).append("% ");
                 }
             }
         }
 
         if (!trouve){
-            sb.append(" ne possede pas ce media.");
+            sb.append(" ne possède pas ce média.");
         }
 
         return sb.toString();
     }
 
+    /**
+     * Affiche la possession d'une organisation spécifique.
+     * @param organisation organisation ciblée
+     * @return chaîne descriptive
+     */
     public String afficheOrganisationPossede(Organisation organisation){
         StringBuilder sb = new StringBuilder();
         sb.append(nomPersonnalite);
@@ -117,12 +161,12 @@ public class Personnalite implements Comparable<Personnalite>{
         for (Map.Entry<Organisation, Float> entry : possedeOrganisation.entrySet()) {
             if (entry.getKey().equals(organisation)){
                 trouve = true;
-                sb.append(",").append(" ");
-                if (possedeOrganisation.get(organisation)!=null){
-                    sb.append("possède").append(" ");
+                sb.append(", ");
+                if (entry.getValue()!=null){
+                    sb.append("possède ");
                 }
                 else if(qualificatifOrganisation.equals("égal à")){
-                    sb.append("possède").append(" ");
+                    sb.append("possède ");
                 }
                 else{
                     sb.append(qualificatifOrganisation).append(" ");
@@ -131,24 +175,26 @@ public class Personnalite implements Comparable<Personnalite>{
                     sb.append(entry.getKey().getNomOrganisation()).append(" ");
                 }
                 if(entry.getValue()!=null){
-                    sb.append("à ").append(entry.getValue()).append("%").append(" ");
+                    sb.append("à ").append(entry.getValue()).append("% ");
                 }
             }
         }
 
         if (!trouve){
-            sb.append(" ne possede pas cette organisation.");
+            sb.append(" ne possède pas cette organisation.");
         }
 
         return sb.toString();
     }
 
+    /**
+     * Affiche tous les médias possédés directement ou via des organisations.
+     * @return chaîne descriptive
+     */
     public String afficheToutMediaPossede(){
         StringBuilder sb = new StringBuilder();
         sb.append(nomPersonnalite);
         boolean trouve = false;
-
-
 
         if(!possedeMedia.isEmpty()) {
             trouve = true;
@@ -168,54 +214,57 @@ public class Personnalite implements Comparable<Personnalite>{
             }
         }
 
-            for (Map.Entry<Organisation, Float> entry : possedeOrganisation.entrySet()) {
-                if (!entry.getKey().getPossedeMedia().isEmpty()){
+        for (Map.Entry<Organisation, Float> entry : possedeOrganisation.entrySet()) {
+            if (!entry.getKey().getPossedeMedia().isEmpty()){
+                if (!trouve){
+                    trouve = true;
+                }
 
-                    if (!trouve){
-                        trouve = true;
-                    }
+                sb.append(",");
+                if(qualificatifOrganisation.equals("égal à")){
+                    sb.append("possède l'organisation ");
+                }
+                else{
+                    sb.append(qualificatifOrganisation).append(" l'organisation ");
+                }
+                if(entry.getKey()!=null){
+                    sb.append(entry.getKey().getNomOrganisation());
+                }
+                if(entry.getValue()!=null){
+                    sb.append(" à ").append(entry.getValue()).append("%");
+                }
 
-                    sb.append(",");
-                    if(qualificatifOrganisation.equals("égal à")){
-                        sb.append("possède l'organisation ");
+                sb.append(" :\n");
+
+                for (Map.Entry<Media, Float> entry2 : entry.getKey().getPossedeMedia().entrySet()) {
+                    sb.append(" qui ");
+                    if(entry.getKey().getQualificatifMedia().equals("égal à")){
+                        sb.append("possède ");
                     }
                     else{
-                        sb.append(qualificatifOrganisation).append(" l'organisation ");
+                        sb.append(entry.getKey().getQualificatifMedia()).append(" ");
                     }
-                    if(entry.getKey()!=null){
-                        sb.append(entry.getKey().getNomOrganisation());
+                    if(entry2.getKey()!=null){
+                        sb.append(entry2.getKey().getNomMedia());
                     }
-                    if(entry.getValue()!=null){
-                        sb.append(" à ").append(entry.getValue()).append("%");
-                    }
-
-                    sb.append(" :\n");
-
-                    for (Map.Entry<Media, Float> entry2 : entry.getKey().getPossedeMedia().entrySet()) {
-                        sb.append(" qui ");
-                        if(entry.getKey().getQualificatifMedia().equals("égal à")){
-                            sb.append("possède ");
-                        }
-                        else{
-                            sb.append(entry.getKey().getQualificatifMedia()).append(" ");
-                        }
-                        if(entry2.getKey()!=null){
-                            sb.append(entry2.getKey().getNomMedia());
-                        }
-                        if(entry2.getValue()!=null){
-                            sb.append(" à ").append(entry2.getValue()).append("%").append("\n");
-                        }
+                    if(entry2.getValue()!=null){
+                        sb.append(" à ").append(entry2.getValue()).append("%").append("\n");
                     }
                 }
             }
+        }
 
-            if (!trouve){
-                sb.append(" ne possede aucun media.");
-            }
+        if (!trouve){
+            sb.append(" ne possède aucun média.");
+        }
 
-            return sb.toString();
+        return sb.toString();
     }
 
+    /**
+     * Affiche toutes les organisations possédées, ainsi que celles que ces organisations possèdent.
+     * @return chaîne descriptive
+     */
     public String afficheTouteOrganisationPossede(){
         StringBuilder sb = new StringBuilder();
         sb.append(nomPersonnalite);
@@ -225,8 +274,8 @@ public class Personnalite implements Comparable<Personnalite>{
             trouve = true;
             for (Map.Entry<Organisation, Float> entry : possedeOrganisation.entrySet()) {
                 sb.append(",");
-                if (possedeOrganisation.get(entry.getKey())!=null){
-                    sb.append("possède").append(" ");
+                if (entry.getValue()!=null){
+                    sb.append("possède ");
                 }
                 else if(qualificatifOrganisation.equals("égal à")){
                     sb.append("possède");
@@ -241,13 +290,8 @@ public class Personnalite implements Comparable<Personnalite>{
                     sb.append(" à ").append(entry.getValue()).append("%");
                 }
 
-
-
-
                 if(!entry.getKey().getPossedeOrganisation().isEmpty()){
-
                     sb.append(" :\n");
-
                     for (Map.Entry<Organisation, Float> entry2 : entry.getKey().getPossedeOrganisation().entrySet()) {
                         sb.append(" qui ");
                         if(entry.getKey().getQualificatifOrganisation().equals("égal à")){
@@ -262,22 +306,23 @@ public class Personnalite implements Comparable<Personnalite>{
                         if(entry2.getValue()!=null){
                             sb.append(" à ").append(entry2.getValue()).append("%").append("\n");
                         }
-
                     }
                 }
             }
         }
 
         if (!trouve){
-            sb.append(" ne possede aucune organisation.");
+            sb.append(" ne possède aucune organisation.");
         }
 
         return sb.toString();
     }
 
-
-
-    //TODO ameliorer le toString, prendre en compte le cas où une personnalite ne possede pas d'organisation par exemple (si possedeOrganisation est vide), prendre en compte le cas où le pourcentage a pour valeure null
+    /**
+     * Représentation textuelle de la personnalité.
+     * Affiche les possessions directes.
+     * @return chaîne de caractères
+     */
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -300,7 +345,7 @@ public class Personnalite implements Comparable<Personnalite>{
         }
 
         for (Map.Entry<Media, Float> entry : possedeMedia.entrySet()) {
-            sb.append(",").append('\t');
+            sb.append(",\t");
             if(qualificatifMedia.equals("égal à")){
                 sb.append("possède");
             }
@@ -315,19 +360,16 @@ public class Personnalite implements Comparable<Personnalite>{
             }
         }
 
-        // Supprimer la virgule et l'espace supplémentaires à la fin
-
-
         return sb.toString();
     }
 
+    /**
+     * Comparaison des personnalités par ordre alphabétique.
+     * @param other autre personnalité
+     * @return entier de comparaison
+     */
     @Override
     public int compareTo(Personnalite other) {
         return this.nomPersonnalite.compareTo(other.nomPersonnalite);
     }
-
-
-
-
-
 }
