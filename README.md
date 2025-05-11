@@ -2,7 +2,7 @@
 
 ## Description
 
-Cette application Java permet d'analyser et de croiser des données issues de fichiers `.tsv` concernant des personnes, des organisations et des médias. Ce guide vous explique comment installer et exécuter le projet correctement.
+Cette application Java permet de surveiller les mentions dans la presse de personnes / groupes qui peuvent posséder certains titres de presse. Ce guide vous explique comment installer et exécuter le projet correctement.
 
 ## Prérequis
 
