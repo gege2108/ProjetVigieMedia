@@ -167,7 +167,7 @@ public class TSVParser {
         }
 
         //remplacer par l'adresse où vous avez enregistrer le projet
-        String pathPersonneOrganisation = "C:\\Users\\germa\\OneDrive\\Documents\\Travail\\ET3\\S6\\Java\\projetJava\\data\\organisation-media.tsv";
+        String pathOrganisationMedia = "C:\\Users\\germa\\OneDrive\\Documents\\Travail\\ET3\\S6\\Java\\projetJava\\data\\organisation-media.tsv";
 
         List<String> origineOrganisationMedia = new ArrayList<>();
         List<String> qualificatifOrganisationMedia = new ArrayList<>();
@@ -175,7 +175,7 @@ public class TSVParser {
         List<String> cibleOrganisationMedia = new ArrayList<>();
 
         //Parsing
-        try (BufferedReader br = new BufferedReader(new FileReader(pathPersonneOrganisation))) {
+        try (BufferedReader br = new BufferedReader(new FileReader(pathOrganisationMedia))) {
             String lignePersonneMedia;
             int compteurPersonneMedia = 1;
             while ((lignePersonneMedia = br.readLine()) != null && compteurPersonneMedia < 228) {
