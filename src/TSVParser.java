@@ -26,6 +26,7 @@ public class TSVParser {
      * @return une liste d'objets {@link Media}.
      */
     public List<Media> mediaParser(){
+        //remplacer par l'adresse où vous avez enregistrer le projet
         String pathMedia = "C:\\Users\\germa\\OneDrive\\Documents\\Travail\\ET3\\S6\\Java\\projetJava\\data\\medias.tsv";
 
         // Liste pour stocker les colonnes
@@ -117,7 +118,7 @@ public class TSVParser {
      */
     public List<Organisation> organisationParser(List<Media> listMedia){
 
-
+        //remplacer par l'adresse où vous avez enregistrer le projet
         String pathOrganisation = "C:\\Users\\germa\\OneDrive\\Documents\\Travail\\ET3\\S6\\Java\\projetJava\\data\\organisations.tsv";
 
         List<String> ListNomOrganisation = new ArrayList<>();
@@ -165,7 +166,7 @@ public class TSVParser {
             listOrganisation.add(organisation);
         }
 
-
+        //remplacer par l'adresse où vous avez enregistrer le projet
         String pathPersonneOrganisation = "C:\\Users\\germa\\OneDrive\\Documents\\Travail\\ET3\\S6\\Java\\projetJava\\data\\organisation-media.tsv";
 
         List<String> origineOrganisationMedia = new ArrayList<>();
@@ -227,6 +228,7 @@ public class TSVParser {
         }
 
         //Parsing pour implementer les instances de possedeOrganisation
+        //remplacer par l'adresse où vous avez enregistrer le projet
         String pathOrganisationOrganisation = "C:\\Users\\germa\\OneDrive\\Documents\\Travail\\ET3\\S6\\Java\\projetJava\\data\\organisation-organisation.tsv";
 
         // Liste pour stocker chaques colonnes
@@ -291,8 +293,7 @@ public class TSVParser {
      */
     public List<Personnalite> personnalitesOrganisationParser(List<Media> listMedia,List<Organisation> listOrganisation){
         // Chemin vers le fichier TSV
-        // Expliquer à la prof qu'il faut mettre le bon path
-
+        //remplacer par l'adresse où vous avez enregistrer le projet
         String path = "C:\\Users\\germa\\OneDrive\\Documents\\Travail\\ET3\\S6\\Java\\projetJava\\data\\personnes.tsv";
 
         // Liste pour stocker la première colonne
@@ -327,6 +328,7 @@ public class TSVParser {
 
 
         //Parsing pour implementer les instances de possedeOrganisation pour chaque personnalite
+        //remplacer par l'adresse où vous avez enregistrer le projet
         String path2 = "C:\\Users\\germa\\OneDrive\\Documents\\Travail\\ET3\\S6\\Java\\projetJava\\data\\personne-organisation.tsv";
 
         // Liste pour stocker chaques colonnes
@@ -378,6 +380,7 @@ public class TSVParser {
 
 
         //Parsing pour implementer les instances de possedeMedia pour chaque personnalite
+        //remplacer par l'adresse où vous avez enregistrer le projet
         String pathPersonneMedia = "C:\\Users\\germa\\OneDrive\\Documents\\Travail\\ET3\\S6\\Java\\projetJava\\data\\personne-media.tsv";
 
         // Liste pour stocker chaques colonnes
